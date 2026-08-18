@@ -1,0 +1,87 @@
+:root{
+  --navy:#16233F; --blue:#2B5FAD; --blue-dark:#1E4685; --blue-mid:#5B85C4; --blue-light:#8FA8D6; --blue-pale:#C7D4EA;
+  --bg:#F5F6F8; --border:#E3E6EB; --border-light:#F0F1F4; --muted:#667085; --muted2:#98A2B3;
+  --green:#2E8B57; --green-bg:#E8F5EC; --orange:#C1662F; --orange-bg:#FBEDE3; --red:#9B2C2C; --red-bg:#F3E7E7;
+  --accent-bg:#EAF1FB; --accent-text:#1E4685;
+}
+body{background:var(--bg);font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--navy)}
+a{color:var(--blue)}
+a:hover{color:var(--blue-dark)}
+
+/* botoes/badges usando a paleta SIGIS por cima do Bootstrap */
+.btn-sigis{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn-sigis:hover{background:var(--blue-dark);border-color:var(--blue-dark);color:#fff}
+.btn-sigis-outline{background:#fff;border-color:#D0D5DD;color:#344054}
+.btn-sigis-outline:hover{background:var(--bg)}
+.btn-sigis-green{background:var(--green);border-color:var(--green);color:#fff}
+.btn-sigis-green:hover{background:#256e46;border-color:#256e46;color:#fff}
+
+/* ---- login ---- */
+.login-wrap{min-height:100vh}
+.login-left{background:var(--navy);color:#fff;position:relative;overflow:hidden;min-height:100vh}
+.login-left .blob1{position:absolute;top:-120px;right:-120px;width:360px;height:360px;border-radius:50%;background:rgba(43,95,173,.35)}
+.login-left .blob2{position:absolute;bottom:-160px;left:-80px;width:300px;height:300px;border-radius:50%;background:rgba(43,95,173,.2)}
+.brand-mark{width:36px;height:36px;background:var(--blue);border-radius:8px}
+.brand-mark.sm{width:30px;height:30px;border-radius:7px}
+
+/* ---- app shell ---- */
+.sigis-sidebar{width:240px;background:var(--navy);min-height:100vh}
+.sigis-sidebar .nav-link{color:#C7D2E6;font-size:.86rem;font-weight:500;border-radius:7px;padding:.5rem .6rem;margin-bottom:2px;display:flex;align-items:center;gap:10px}
+.sigis-sidebar .nav-link:hover{background:#223257;color:#fff}
+.sigis-sidebar .nav-link.active{background:var(--blue);color:#fff;font-weight:700}
+.sigis-sidebar .nav-link .dot{width:6px;height:6px;border-radius:2px;background:#4A5D85;flex:none}
+.sigis-sidebar .nav-link.active .dot{background:#fff}
+.sigis-sidebar .nav-group-label{font-size:.65rem;font-weight:700;letter-spacing:1px;color:#5E729E;text-transform:uppercase;padding:0 .6rem .4rem}
+.sigis-avatar{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700}
+
+.sigis-topbar{height:64px;background:#fff;border-bottom:1px solid var(--border)}
+.sigis-content{padding:28px 32px}
+
+/* cards / kpis */
+.card{border-color:var(--border)}
+.kpi-label{font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.kpi-value{font-size:1.65rem;font-weight:800;color:var(--navy)}
+.kpi-delta{font-size:.75rem;font-weight:600;color:var(--green)}
+
+/* charts */
+.bars{display:flex;align-items:flex-end;gap:14px;height:140px;padding:0 4px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar{width:100%;max-width:34px;background:var(--blue);border-radius:5px 5px 0 0}
+.donut{width:130px;height:130px;border-radius:50%;margin:0 auto 16px}
+.legend-dot{width:9px;height:9px;border-radius:2px;flex:none}
+
+/* tabelas */
+.table-sigis thead th{font-size:.68rem;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)}
+.table-sigis td{font-size:.83rem;vertical-align:middle}
+.table-sigis tbody tr:hover{background:#FAFBFC}
+
+/* projetos / grupos */
+.project-stats .val{font-size:1.05rem;font-weight:700;color:var(--navy)}
+.project-stats .lbl{font-size:.68rem;color:var(--muted2)}
+.grupo-header{background:#FAFBFC;border-bottom:1px solid var(--border)}
+
+/* estoque */
+.nivel-track{width:100px;height:6px;background:#EEF0F3;border-radius:4px;overflow:hidden}
+.nivel-fill{height:100%}
+
+/* evidencias */
+.evid-thumb{height:100px;background:repeating-linear-gradient(135deg,#EEF0F3,#EEF0F3 8px,#E3E6EB 8px,#E3E6EB 16px);display:flex;align-items:center;justify-content:center}
+.evid-thumb img{max-height:100%;max-width:100%;object-fit:cover}
+
+/* wizard doacoes */
+.wizard-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700}
+.wizard-line{width:40px;height:1px;background:#D0D5DD}
+.inst-card{border:1.5px solid var(--border);border-radius:8px;cursor:pointer}
+.inst-card.selected{border-color:var(--blue);background:var(--accent-bg)}
+.summary-box{background:var(--accent-bg);border-radius:10px}
+
+/* termo */
+.termo-doc{max-width:760px;margin:0 auto;padding:36px}
+.termo-header{border-bottom:2px solid var(--navy)}
+.termo-vidas{background:var(--accent-bg);border-radius:8px}
+.termo-sign div{border-top:1px solid var(--navy);padding-top:6px;font-size:.75rem;color:#344054}
+
+@media print{
+  .no-print{display:none !important}
+  .sigis-sidebar,.sigis-topbar{display:none !important}
+}
