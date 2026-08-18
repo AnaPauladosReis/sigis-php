@@ -1,7 +1,6 @@
 <?php
 /**
  * Configuracao de conexao com o banco de dados MySQL.
- * Ajuste as credenciais abaixo conforme o seu ambiente (XAMPP/WAMP/Laragon/servidor).
  */
 $DB_HOST = 'localhost';
 $DB_NAME = 'sigis';
@@ -17,5 +16,5 @@ try {
         PDO::ATTR_EMULATE_PREPARES => false,
     ));
 } catch (PDOException $e) {
-    die('Erro ao conectar ao banco de dados. Verifique config/db.php e se o banco "sigis" foi importado (database/schema.sql). Detalhe: ' . htmlspecialchars($e->getMessage()));
+    die('Erro ao conectar ao banco de dados.' . htmlspecialchars($e->getMessage()));
 }
