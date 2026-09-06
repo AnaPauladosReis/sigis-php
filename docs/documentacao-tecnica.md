@@ -14,6 +14,8 @@ Entrada de material → Estoque → Produção Social → Doação → Termo + E
 
 com um dashboard administrativo para acompanhar indicadores de impacto (peso reaproveitado, vidas impactadas, produção por projeto).
 
+![Dashboard administrativo do SIGIS](screenshots/dashboard.jpg)
+
 ## 2. Arquitetura
 
 **Stack:** PHP procedural (sem framework, sem Composer) + MySQL 8, front-end server-side renderizado com Bootstrap 5.
