@@ -153,6 +153,10 @@ Fluxo em 3 passos (wizard): escolha da instituição, seleção de itens/quantid
 
 > Nota para a documentação acadêmica: este é um usuário seed criado pelo `schema.sql` para fins de demonstração/desenvolvimento — não deve ser usado em um ambiente de produção real sem troca de senha.
 
-## 7. Problema conhecido: acentuação exibida incorretamente
+## 7. Bug corrigido: acentuação exibida incorretamente
 
-Durante a captura das telas foi observado que caracteres acentuados vindos do banco aparecem corrompidos na interface — ex.: "Eletrônicos" exibido como **"EletrÃ´nicos"**, "Móveis" como **"MÃ³veis"**, "Doação espontânea" como **"DoaÃ§Ã£o espontÃ¢nea"**. É um sintoma clássico de *mojibake* (texto UTF-8 sendo interpretado como Latin-1 em algum ponto da cadeia). Vale investigar antes de usar essas telas como referência visual "final" na documentação — candidatos mais prováveis: charset da conexão MySQL no cliente usado para popular o `schema.sql`, ou ausência de `SET NAMES utf8mb4`/collation consistente entre a conexão PDO e as tabelas.
+Durante a primeira rodada de capturas de tela foi observado que caracteres acentuados vindos do banco apareciam corrompidos na interface — ex.: "Eletrônicos" exibido como "EletrÃ´nicos", "Móveis" como "MÃ³veis", "Doação espontânea" como "DoaÃ§Ã£o espontÃ¢nea". Era um caso clássico de *mojibake* por double-encoding: confirmado via `HEX()` no MySQL que o dado gravado na tabela já estava corrompido (não era só um problema de exibição).
+
+**Causa raiz:** o entrypoint oficial do MySQL importa o `database/schema.sql` executando `mysql --defaults-extra-file=... --protocol=socket ...`, sem `--default-character-set`. Sem esse flag, o cliente `mysql` usado no import cai num charset diferente de UTF-8, então cada caractere acentuado (2 bytes em UTF-8) é lido como 2 caracteres Latin-1 e regravado como UTF-8 — duplicando a codificação. Um `SET NAMES utf8mb4;` no topo do `schema.sql` **não resolveu**, porque esse comando afeta a interpretação do servidor, não o charset já aplicado pelo cliente na conexão inicial.
+
+**Correção aplicada:** foi adicionado `database/mysql-charset.cnf`, montado em `/etc/mysql/conf.d/charset.cnf` no container do banco (ver `docker-compose.yml`), forçando `default-character-set=utf8mb4` no `[client]`/`[mysql]` e `character-set-server=utf8mb4` no `[mysqld]`. Isso garante que qualquer invocação do `mysql` dentro do container — incluindo a automática do entrypoint — use UTF-8 corretamente. As telas na seção 5 já refletem o texto corrigido.
