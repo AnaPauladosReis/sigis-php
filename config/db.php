@@ -2,10 +2,10 @@
 /**
  * Configuracao de conexao com o banco de dados MySQL.
  */
-$DB_HOST = 'localhost';
-$DB_NAME = 'sigis';
-$DB_USER = 'root';
-$DB_PASS = '';
+$DB_HOST = getenv('DB_HOST') ?: 'localhost';
+$DB_NAME = getenv('DB_NAME') ?: 'sigis';
+$DB_USER = getenv('DB_USER') ?: 'root';
+$DB_PASS = getenv('DB_PASS') ?: '';
 $DB_CHARSET = 'utf8mb4';
 
 try {
