@@ -24,6 +24,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./database/mysql-charset.cnf:/etc/mysql/conf.d/charset.cnf
     ports:
       - "3306:3306"
     healthcheck:
