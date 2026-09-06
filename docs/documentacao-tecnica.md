@@ -95,10 +95,64 @@ Credenciais e nome do banco vêm de variáveis de ambiente (`DB_HOST`, `DB_NAME`
 
 Instruções completas de setup estão no `README.md` do repositório.
 
-## 5. Login de demonstração
+## 5. Telas do sistema
+
+Capturas de tela de cada módulo, incluindo os modais de cadastro/lançamento.
+
+### Projetos Sociais
+
+![Projetos Sociais](screenshots/projetos.jpg)
+![Modal Novo Projeto Social](screenshots/projetos_modal.jpg)
+
+### Grupos de Impacto & Itens
+
+![Grupos de Impacto](screenshots/grupos.jpg)
+![Modal Novo item](screenshots/grupos_modal.jpg)
+
+### Instituições Beneficiadas
+
+![Instituições Beneficiadas](screenshots/instituicoes.jpg)
+![Modal Nova Instituição](screenshots/instituicoes_modal.jpg)
+
+### Entradas de Materiais
+
+![Entradas de Materiais](screenshots/entradas.jpg)
+![Modal Registrar Entrada](screenshots/entradas_modal.jpg)
+
+### Estoque de Itens
+
+![Estoque de Itens](screenshots/estoque.jpg)
+
+### Produção Social
+
+![Produção Social](screenshots/producao.jpg)
+![Modal Registrar Produção](screenshots/producao_modal.jpg)
+
+### Direcionamento de Doações
+
+Fluxo em 3 passos (wizard): escolha da instituição, seleção de itens/quantidades e confirmação com geração do termo.
+
+![Passo 1 — Instituição](screenshots/doacoes_passo1.jpg)
+![Passo 2 — Itens](screenshots/doacoes_passo2.jpg)
+![Passo 3 — Confirmação](screenshots/doacoes_passo3.jpg)
+
+### Termo de Doação
+
+![Termo de Doação](screenshots/termo.jpg)
+
+### Evidências & Relatórios
+
+![Evidências & Relatórios](screenshots/evidencias.jpg)
+![Modal Nova Evidência](screenshots/evidencias_modal.jpg)
+
+## 6. Login de demonstração
 
 | Email | Senha |
 |---|---|
 | `admin@gersc.org.br` | `gersc123` |
 
 > Nota para a documentação acadêmica: este é um usuário seed criado pelo `schema.sql` para fins de demonstração/desenvolvimento — não deve ser usado em um ambiente de produção real sem troca de senha.
+
+## 7. Problema conhecido: acentuação exibida incorretamente
+
+Durante a captura das telas foi observado que caracteres acentuados vindos do banco aparecem corrompidos na interface — ex.: "Eletrônicos" exibido como **"EletrÃ´nicos"**, "Móveis" como **"MÃ³veis"**, "Doação espontânea" como **"DoaÃ§Ã£o espontÃ¢nea"**. É um sintoma clássico de *mojibake* (texto UTF-8 sendo interpretado como Latin-1 em algum ponto da cadeia). Vale investigar antes de usar essas telas como referência visual "final" na documentação — candidatos mais prováveis: charset da conexão MySQL no cliente usado para popular o `schema.sql`, ou ausência de `SET NAMES utf8mb4`/collation consistente entre a conexão PDO e as tabelas.
