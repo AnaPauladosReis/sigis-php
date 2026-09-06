@@ -52,7 +52,11 @@ Autenticação é baseada em sessão PHP (`$_SESSION['user_id']`), verificada pe
 
 ## 3. Modelo de dados
 
-Diagrama entidade-relacionamento completo: **https://lucid.app/lucidchart/26fc2c9b-b127-4077-a1dd-d0a862714a0c/edit**
+Diagrama entidade-relacionamento completo (notação pé-de-galinha):
+
+![Diagrama ER do SIGIS](erd/erd.png)
+
+Editável no Lucidchart: **https://lucid.app/lucidchart/26fc2c9b-b127-4077-a1dd-d0a862714a0c/edit** — versão em PDF disponível em [`erd/erd.pdf`](erd/erd.pdf).
 
 ### Tabelas principais
 
