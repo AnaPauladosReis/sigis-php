@@ -207,7 +207,7 @@ CREATE TABLE termos (
 ) ENGINE=InnoDB;
 
 INSERT INTO termos (doacao_id, numero, emitido_em) VALUES
-(1, 'TD-2026-00146', '2026-08-02');
+(1, '001/2026', '2026-08-02');
 
 -- ---------------------------------------------------------
 -- Evidencias fotograficas

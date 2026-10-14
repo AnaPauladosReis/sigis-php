@@ -75,15 +75,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $stmtSaldo->execute(array($qtd, $itemId));
                     }
 
-                    // gera o numero sequencial do termo (comeca em TD-2026-00146)
-                    $ultimo = 146;
-                    $stmt = $pdo->query('SELECT numero FROM termos');
+                    // gera o numero sequencial do termo no padrao oficial "NNN/AAAA" (sequencia reinicia a cada ano)
+                    $ano = date('Y');
+                    $ultimo = 0;
+                    $stmt = $pdo->query("SELECT numero FROM termos WHERE numero LIKE '%/" . $ano . "'");
                     foreach ($stmt->fetchAll() as $row) {
-                        if (preg_match('/(\d+)$/', $row['numero'], $m)) {
+                        if (preg_match('#^(\d+)/' . $ano . '$#', $row['numero'], $m)) {
                             $ultimo = max($ultimo, (int)$m[1]);
                         }
                     }
-                    $numero = 'TD-' . date('Y') . '-00' . ($ultimo + 1);
+                    $numero = sprintf('%03d', $ultimo + 1) . '/' . $ano;
 
                     $stmt = $pdo->prepare('INSERT INTO termos (doacao_id, numero, emitido_em) VALUES (?, ?, CURDATE())');
                     $stmt->execute(array($doacaoId, $numero));

@@ -22,6 +22,25 @@ function fmt_num($n, $decimals = 0) {
     return number_format((float)$n, $decimals, ',', '.');
 }
 
+/** Formata uma data (Y-m-d ou timestamp) por extenso em pt-BR, ex.: "28 de janeiro de 2026". */
+function fmt_data_extenso($data) {
+    $meses = array(
+        1 => 'janeiro', 2 => 'fevereiro', 3 => 'março', 4 => 'abril',
+        5 => 'maio', 6 => 'junho', 7 => 'julho', 8 => 'agosto',
+        9 => 'setembro', 10 => 'outubro', 11 => 'novembro', 12 => 'dezembro',
+    );
+    $ts = is_numeric($data) ? (int)$data : strtotime($data);
+    return date('j', $ts) . ' de ' . $meses[(int)date('n', $ts)] . ' de ' . date('Y', $ts);
+}
+
+/** Formata quantidade para o termo de doação: sem casas decimais quando inteiro, com unidade exceto "un". */
+function fmt_qtd_termo($qtd, $unidade) {
+    $qtd = (float)$qtd;
+    $decimals = (floor($qtd) == $qtd) ? 0 : 2;
+    $num = fmt_num($qtd, $decimals);
+    return ($unidade && $unidade !== 'un') ? ($num . ' ' . $unidade) : $num;
+}
+
 function e($s) {
     return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
 }
