@@ -70,7 +70,7 @@ require __DIR__ . '/includes/layout_top.php';
       atividades na Instituição e para seu público atendido.
     </p>
 
-    <table class="termo-table mb-3">
+    <table class="termo-table mb-2">
       <thead><tr><th style="width:140px">Quantidade</th><th>Descrição do Item</th></tr></thead>
       <tbody>
         <?php foreach ($itens as $it) { ?>
@@ -79,11 +79,11 @@ require __DIR__ . '/includes/layout_top.php';
       </tbody>
     </table>
 
-    <table class="termo-table termo-table-inline mb-4">
+    <table class="termo-table termo-table-inline mb-3">
       <tr><th>Quantidade de pessoas impactadas:</th><td><?php echo fmt_num($doacao['vidas_impactadas'], 0); ?></td></tr>
     </table>
 
-    <table class="termo-table termo-field-table mb-5">
+    <table class="termo-table termo-field-table mb-4">
       <tr><th colspan="2" class="termo-field-header">Dados do Representante Legal ou Outorgado:</th></tr>
       <tr><td class="termo-field-label">Nome Completo:</td><td>&nbsp;</td></tr>
       <tr><td class="termo-field-label">CPF:</td><td>&nbsp;</td></tr>
