@@ -52,7 +52,7 @@ require __DIR__ . '/includes/layout_top.php';
 <?php if (!$termo) { ?>
   <div class="card p-4 text-center text-muted no-print">Nenhum termo de doação emitido ainda. Confira em <a href="doacoes.php">Direcionamento de Doações</a>.</div>
 <?php } else { ?>
-  <div class="card termo-declaracao mb-4">
+  <div class="termo-declaracao mb-4">
     <img src="assets/img/logo-sesi.png" alt="SESI" class="termo-logo">
 
     <div class="termo-titulo">DECLARAÇÃO DOAÇÃO DE ITENS (<?php echo e(TERMO_TIPO); ?>)&nbsp;&nbsp;N° <?php echo e($termo['numero']); ?></div>
