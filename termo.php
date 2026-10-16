@@ -12,13 +12,12 @@ define('TERMO_SIGNATARIO_CARGO', 'Interlocutora da Responsabilidade Social e Cul
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
+$termo = null;
 if ($id > 0) {
     $stmt = $pdo->prepare('SELECT * FROM termos WHERE id = ?');
     $stmt->execute(array($id));
-} else {
-    $stmt = $pdo->query('SELECT * FROM termos ORDER BY id DESC LIMIT 1');
+    $termo = $stmt->fetch();
 }
-$termo = $stmt->fetch();
 
 $doacao = null;
 $itens = array();
@@ -49,9 +48,9 @@ require __DIR__ . '/includes/layout_top.php';
   <?php } ?>
 </div>
 
-<?php if (!$termo) { ?>
-  <div class="card p-4 text-center text-muted no-print">Nenhum termo de doação emitido ainda. Confira em <a href="doacoes.php">Direcionamento de Doações</a>.</div>
-<?php } else { ?>
+<?php if ($id > 0 && !$termo) { ?>
+  <div class="card p-4 text-center text-muted no-print">Termo não encontrado. Confira em <a href="doacoes.php">Direcionamento de Doações</a>.</div>
+<?php } elseif ($termo) { ?>
   <div class="termo-declaracao mb-4">
     <img src="assets/img/logo-sesi.png" alt="SESI" class="termo-logo">
 
@@ -110,7 +109,7 @@ require __DIR__ . '/includes/layout_top.php';
             <td class="ps-3 fw-medium text-dark"><?php echo e($t['numero']); ?></td>
             <td><?php echo e($t['instituicao_nome']); ?></td>
             <td><?php echo e(date('d/m/Y', strtotime($t['emitido_em']))); ?></td>
-            <td class="pe-3"><a href="termo.php?id=<?php echo $t['id']; ?>">Ver</a></td>
+            <td class="pe-3"><a href="termo.php?id=<?php echo $t['id']; ?>" target="_blank" rel="noopener">Ver</a></td>
           </tr>
         <?php } ?>
         <?php if (!count($termosTodos)) { ?>
