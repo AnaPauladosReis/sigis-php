@@ -159,11 +159,14 @@ require __DIR__ . '/includes/layout_top.php';
 <?php if ($wizard['step'] === 1) { ?>
   <div class="card p-3">
     <div class="fw-semibold mb-3" style="font-size:.9rem">Selecione a instituição beneficiada</div>
+    <input type="text" id="buscaInstituicao" class="form-control mb-3" style="max-width:320px" placeholder="Buscar instituição por nome, bairro ou tipo...">
     <form method="post">
       <input type="hidden" name="acao" value="ir_passo2">
-      <div class="row g-2 mb-3">
-        <?php foreach ($instituicoes as $i) { ?>
-          <div class="col-md-6">
+      <div class="row g-2 mb-3" id="listaInstituicoes">
+        <?php foreach ($instituicoes as $i) {
+            $busca = mb_strtolower($i['nome'] . ' ' . $i['bairro'] . ' ' . $i['tipo']);
+        ?>
+          <div class="col-md-6 inst-card-col" data-busca="<?php echo e($busca); ?>">
             <label class="inst-card d-block p-2 px-3">
               <input type="radio" name="instituicao_id" value="<?php echo $i['id']; ?>" class="form-check-input me-2" <?php echo ($wizard['instituicao_id'] == $i['id']) ? 'checked' : ''; ?>>
               <span class="fw-semibold" style="font-size:.9rem"><?php echo e($i['nome']); ?></span>
@@ -171,10 +174,28 @@ require __DIR__ . '/includes/layout_top.php';
             </label>
           </div>
         <?php } ?>
+        <div class="col-12 text-muted small py-2 d-none" id="semResultadoInstituicao">Nenhuma instituição encontrada.</div>
       </div>
       <div class="text-end"><button type="submit" class="btn btn-sigis">Continuar</button></div>
     </form>
   </div>
+  <script>
+    (function () {
+      var input = document.getElementById('buscaInstituicao');
+      var cols = document.querySelectorAll('#listaInstituicoes .inst-card-col');
+      var semResultado = document.getElementById('semResultadoInstituicao');
+      input.addEventListener('input', function () {
+        var termo = input.value.trim().toLowerCase();
+        var visiveis = 0;
+        cols.forEach(function (col) {
+          var match = col.dataset.busca.indexOf(termo) !== -1;
+          col.classList.toggle('d-none', !match);
+          if (match) visiveis++;
+        });
+        semResultado.classList.toggle('d-none', visiveis !== 0);
+      });
+    })();
+  </script>
 <?php } elseif ($wizard['step'] === 2) { ?>
   <div class="card p-3">
     <div class="fw-semibold mb-1" style="font-size:.9rem">Selecione os itens e quantidades</div>
