@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $nome = trim($_POST['nome']);
+$razao_social = trim($_POST['razao_social']);
 $cnpj = trim($_POST['cnpj']);
 $bairro = trim($_POST['bairro']);
 $responsavel = trim($_POST['responsavel']);
@@ -18,8 +19,8 @@ if ($nome === '' || $cnpj === '') {
     redirect('instituicoes.php');
 }
 
-$stmt = $pdo->prepare('INSERT INTO instituicoes (nome, cnpj, bairro, responsavel, tipo, acolhimento) VALUES (?, ?, ?, ?, ?, ?)');
-$stmt->execute(array($nome, $cnpj, $bairro, $responsavel, $tipo, $acolhimento));
+$stmt = $pdo->prepare('INSERT INTO instituicoes (nome, razao_social, cnpj, bairro, responsavel, tipo, acolhimento) VALUES (?, ?, ?, ?, ?, ?, ?)');
+$stmt->execute(array($nome, $razao_social, $cnpj, $bairro, $responsavel, $tipo, $acolhimento));
 
 flash_set('Instituição "' . $nome . '" cadastrada com sucesso.');
 redirect('instituicoes.php');

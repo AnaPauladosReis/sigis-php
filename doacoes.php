@@ -200,21 +200,23 @@ require __DIR__ . '/includes/layout_top.php';
   <div class="card p-3">
     <div class="fw-semibold mb-1" style="font-size:.9rem">Selecione os itens e quantidades</div>
     <div class="text-muted small mb-3">Destinado a: <strong class="text-dark"><?php echo e($instituicaoSelecionada ? $instituicaoSelecionada['nome'] : '—'); ?></strong></div>
+    <input type="text" id="buscaItem" class="form-control mb-3" style="max-width:320px" placeholder="Buscar item por nome...">
     <form method="post">
       <div class="table-responsive">
         <table class="table table-sigis">
           <thead><tr><th>Item</th><th>Disponível</th><th>Qtd. a doar</th><th>Vidas (mult.)</th></tr></thead>
-          <tbody>
+          <tbody id="listaItens">
             <?php foreach ($estoqueItens as $it) {
                 $qtdAtual = isset($wizard['selecoes'][$it['item_id']]) ? $wizard['selecoes'][$it['item_id']] : 0;
             ?>
-              <tr>
+              <tr data-busca="<?php echo e(mb_strtolower($it['nome'])); ?>">
                 <td class="fw-medium text-dark"><?php echo e($it['nome']); ?></td>
                 <td><?php echo fmt_num($it['saldo'], 2) . ' ' . e($it['unidade']); ?></td>
                 <td><input type="number" step="0.001" min="0" max="<?php echo (float)$it['saldo']; ?>" name="qtd[<?php echo $it['item_id']; ?>]" value="<?php echo $qtdAtual ?: ''; ?>" class="form-control form-control-sm" style="width:110px"></td>
-                <td class="fw-bold" style="color:var(--blue)"><?php echo fmt_num($it['multiplicador'], 3); ?> / <?php echo e($it['unidade']); ?></td>
+                <td class="fw-bold" style="color:var(--blue)"><?php echo fmt_num_min($it['multiplicador']); ?> / <?php echo e($it['unidade']); ?></td>
               </tr>
             <?php } ?>
+            <tr id="semResultadoItem" class="d-none"><td colspan="4" class="text-center text-muted py-3">Nenhum item encontrado.</td></tr>
           </tbody>
         </table>
       </div>
@@ -224,6 +226,23 @@ require __DIR__ . '/includes/layout_top.php';
       </div>
     </form>
   </div>
+  <script>
+    (function () {
+      var input = document.getElementById('buscaItem');
+      var linhas = document.querySelectorAll('#listaItens tr[data-busca]');
+      var semResultado = document.getElementById('semResultadoItem');
+      input.addEventListener('input', function () {
+        var termo = input.value.trim().toLowerCase();
+        var visiveis = 0;
+        linhas.forEach(function (tr) {
+          var match = tr.dataset.busca.indexOf(termo) !== -1;
+          tr.classList.toggle('d-none', !match);
+          if (match) visiveis++;
+        });
+        semResultado.classList.toggle('d-none', visiveis !== 0);
+      });
+    })();
+  </script>
 <?php } elseif ($wizard['step'] === 3) { ?>
   <div class="card p-4">
     <div class="fw-semibold mb-3" style="font-size:.9rem">Resumo da doação</div>

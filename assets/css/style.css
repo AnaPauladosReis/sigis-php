@@ -15,6 +15,8 @@ a:hover{color:var(--blue-dark)}
 .btn-sigis-outline:hover{background:var(--bg)}
 .btn-sigis-green{background:var(--green);border-color:var(--green);color:#fff}
 .btn-sigis-green:hover{background:#256e46;border-color:#256e46;color:#fff}
+.btn-icon-edit{width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--muted)}
+.btn-icon-edit:hover{background:var(--accent-bg);border-color:var(--blue);color:var(--blue)}
 
 /* ---- login ---- */
 .login-wrap{min-height:100vh}
@@ -54,6 +56,8 @@ a:hover{color:var(--blue-dark)}
 .table-sigis thead th{font-size:.68rem;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)}
 .table-sigis td{font-size:.83rem;vertical-align:middle}
 .table-sigis tbody tr:hover{background:#FAFBFC}
+.table-itens{table-layout:fixed}
+.table-itens td,.table-itens th{overflow-wrap:break-word}
 
 /* projetos / grupos */
 .project-stats .val{font-size:1.05rem;font-weight:700;color:var(--navy)}

@@ -11,6 +11,7 @@ $nome = trim($_POST['nome']);
 $unidade = trim($_POST['unidade']);
 $peso = (float)$_POST['peso_unitario'];
 $mult = (float)$_POST['multiplicador'];
+$projetoId = !empty($_POST['projeto_id']) ? (int)$_POST['projeto_id'] : null;
 
 if ($nome === '' || $unidade === '') {
     flash_set('Preencha nome e unidade do item.', 'danger');
@@ -18,8 +19,8 @@ if ($nome === '' || $unidade === '') {
 }
 
 $pdo->beginTransaction();
-$stmt = $pdo->prepare('INSERT INTO itens (grupo_id, nome, unidade, peso_unitario, multiplicador) VALUES (?, ?, ?, ?, ?)');
-$stmt->execute(array($grupoId, $nome, $unidade, $peso, $mult));
+$stmt = $pdo->prepare('INSERT INTO itens (grupo_id, projeto_id, nome, unidade, peso_unitario, multiplicador) VALUES (?, ?, ?, ?, ?, ?)');
+$stmt->execute(array($grupoId, $projetoId, $nome, $unidade, $peso, $mult));
 $itemId = (int)$pdo->lastInsertId();
 
 $stmt = $pdo->prepare('INSERT INTO estoque (item_id, saldo, minimo) VALUES (?, 0, 0)');

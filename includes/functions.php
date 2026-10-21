@@ -22,6 +22,32 @@ function fmt_num($n, $decimals = 0) {
     return number_format((float)$n, $decimals, ',', '.');
 }
 
+/** Formata um numero usando so as casas decimais necessarias (ate $maxDecimals), sem zeros a mais: 4.000 -> "4", 1.750 -> "1,75". */
+function fmt_num_min($n, $maxDecimals = 3) {
+    $n = round((float)$n, $maxDecimals);
+    $decimals = $maxDecimals;
+    for ($d = 0; $d <= $maxDecimals; $d++) {
+        if (round($n, $d) === $n) {
+            $decimals = $d;
+            break;
+        }
+    }
+    return number_format($n, $decimals, ',', '.');
+}
+
+/** Mesma ideia de fmt_num_min, mas com ponto decimal (sem separador de milhar) para usar em value="" de <input type="number">. */
+function fmt_num_input($n, $maxDecimals = 3) {
+    $n = round((float)$n, $maxDecimals);
+    $decimals = $maxDecimals;
+    for ($d = 0; $d <= $maxDecimals; $d++) {
+        if (round($n, $d) === $n) {
+            $decimals = $d;
+            break;
+        }
+    }
+    return number_format($n, $decimals, '.', '');
+}
+
 /** Formata uma data (Y-m-d ou timestamp) por extenso em pt-BR, ex.: "28 de janeiro de 2026". */
 function fmt_data_extenso($data) {
     $meses = array(

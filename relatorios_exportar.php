@@ -10,7 +10,7 @@ $queries = array(
         'arquivo' => 'projetos_sociais.csv',
     ),
     'instituicoes' => array(
-        'sql' => "SELECT nome AS Instituicao, cnpj AS CNPJ, bairro AS Bairro, responsavel AS Responsavel, tipo AS Tipo, IF(acolhimento,'Sim','Nao') AS Acolhimento FROM instituicoes ORDER BY nome",
+        'sql' => "SELECT nome AS Instituicao, razao_social AS Razao_Social, cnpj AS CNPJ, bairro AS Bairro, responsavel AS Responsavel, tipo AS Tipo, IF(acolhimento,'Sim','Nao') AS Acolhimento FROM instituicoes ORDER BY nome",
         'arquivo' => 'instituicoes_atendidas.csv',
     ),
     'entradas' => array(

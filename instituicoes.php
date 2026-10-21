@@ -24,11 +24,12 @@ require __DIR__ . '/includes/layout_top.php';
 <div class="card">
   <div class="table-responsive">
     <table class="table table-sigis mb-0">
-      <thead><tr><th class="ps-3">Instituição</th><th>CNPJ</th><th>Bairro</th><th>Responsável</th><th>Tipo</th><th class="pe-3">Acolhimento</th></tr></thead>
+      <thead><tr><th class="ps-3">Instituição</th><th>Razão Social</th><th>CNPJ</th><th>Bairro</th><th>Responsável</th><th>Tipo</th><th class="pe-3">Acolhimento</th></tr></thead>
       <tbody>
         <?php foreach ($instituicoes as $i) { ?>
           <tr>
             <td class="ps-3 fw-medium text-dark"><?php echo e($i['nome']); ?></td>
+            <td><?php echo e($i['razao_social']); ?></td>
             <td><?php echo e($i['cnpj']); ?></td>
             <td><?php echo e($i['bairro']); ?></td>
             <td><?php echo e($i['responsavel']); ?></td>
@@ -37,7 +38,7 @@ require __DIR__ . '/includes/layout_top.php';
           </tr>
         <?php } ?>
         <?php if (!count($instituicoes)) { ?>
-          <tr><td colspan="6" class="text-center text-muted py-4">Nenhuma instituição encontrada.</td></tr>
+          <tr><td colspan="7" class="text-center text-muted py-4">Nenhuma instituição encontrada.</td></tr>
         <?php } ?>
       </tbody>
     </table>
@@ -55,6 +56,10 @@ require __DIR__ . '/includes/layout_top.php';
         <div class="mb-3">
           <label class="form-label small fw-semibold">Nome</label>
           <input type="text" name="nome" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">Razão Social</label>
+          <input type="text" name="razao_social" class="form-control">
         </div>
         <div class="row g-2 mb-3">
           <div class="col">
