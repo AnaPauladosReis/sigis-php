@@ -47,7 +47,7 @@ require __DIR__ . '/includes/layout_top.php';
           <tr>
             <td class="ps-3 fw-medium text-dark"><?php echo e($e['item_nome']); ?></td>
             <td><?php echo e($e['grupo_nome']); ?></td>
-            <td><?php echo fmt_num($e['saldo'], 3) . ' ' . e($e['unidade']); ?></td>
+            <td><?php echo fmt_num_min($e['saldo']) . ' ' . e($e['unidade']); ?></td>
             <td style="width:140px">
               <div class="nivel-track"><div class="nivel-fill" style="width:<?php echo $e['pct']; ?>%;background:<?php echo $statusColor; ?>"></div></div>
             </td>

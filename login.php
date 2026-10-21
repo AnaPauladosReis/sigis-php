@@ -7,6 +7,10 @@ if (!empty($_SESSION['user_id'])) {
 
 $erro = null;
 
+$projetosAtivos = (int)$pdo->query("SELECT COUNT(*) FROM projetos WHERE status = 'Ativo'")->fetchColumn();
+$vidasImpactadas = (float)$pdo->query('SELECT COALESCE(SUM(vidas_impactadas),0) FROM doacoes')->fetchColumn();
+$instituicoesAtendidas = (int)$pdo->query('SELECT COUNT(DISTINCT instituicao_id) FROM doacoes')->fetchColumn();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
     $senha = (string)$_POST['senha'];
@@ -49,9 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <h1 class="fw-bold mb-3" style="font-size:2.1rem;max-width:480px;line-height:1.25">Sistema Integrado de Gestão de Impacto Social, Produção Social e Doações</h1>
       <p style="color:#B8C4DA;max-width:440px">Centralize projetos sociais, controle de estoque, produção social, doações e indicadores de vidas impactadas em um único lugar.</p>
       <div class="d-flex gap-5 mt-5">
-        <div><div class="fs-3 fw-bold">4</div><div class="small" style="color:#8FA8D6">Projetos ativos</div></div>
-        <div><div class="fs-3 fw-bold">1.842</div><div class="small" style="color:#8FA8D6">Vidas impactadas</div></div>
-        <div><div class="fs-3 fw-bold">12</div><div class="small" style="color:#8FA8D6">Instituições atendidas</div></div>
+        <div><div class="fs-3 fw-bold"><?php echo fmt_num($projetosAtivos); ?></div><div class="small" style="color:#8FA8D6">Projetos ativos</div></div>
+        <div><div class="fs-3 fw-bold"><?php echo fmt_num($vidasImpactadas, 1); ?></div><div class="small" style="color:#8FA8D6">Vidas impactadas</div></div>
+        <div><div class="fs-3 fw-bold"><?php echo fmt_num($instituicoesAtendidas); ?></div><div class="small" style="color:#8FA8D6">Instituições atendidas</div></div>
       </div>
     </div>
   </div>
