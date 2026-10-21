@@ -260,7 +260,7 @@ require __DIR__ . '/includes/layout_top.php';
       <?php foreach ($resumoItens as $r) { ?>
         <div class="d-flex justify-content-between px-3 py-2 rounded small" style="background:var(--bg)">
           <div class="fw-medium text-dark"><?php echo e($r['nome']); ?></div>
-          <div class="text-secondary"><?php echo fmt_num($r['qtd'], 2) . ' ' . e($r['unidade']); ?></div>
+          <div class="text-secondary"><?php echo fmt_num_min($r['qtd']) . ' ' . e($r['unidade']); ?></div>
         </div>
       <?php } ?>
     </div>

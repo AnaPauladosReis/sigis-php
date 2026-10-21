@@ -33,7 +33,7 @@ require __DIR__ . '/includes/layout_top.php';
             <td><?php echo e($e['origem']); ?></td>
             <td class="fw-medium text-dark"><?php echo e($e['projeto_nome'] ?: '—'); ?></td>
             <td><?php echo e($e['item_nome']); ?></td>
-            <td><?php echo fmt_num($e['quantidade'], 3) . ' ' . e($e['unidade']); ?></td>
+            <td><?php echo fmt_num_min($e['quantidade']) . ' ' . e($e['unidade']); ?></td>
             <td class="pe-3"><?php echo $e['peso'] !== null ? fmt_num($e['peso'], 1) . ' kg' : '—'; ?></td>
           </tr>
         <?php } ?>

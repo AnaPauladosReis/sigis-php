@@ -20,7 +20,7 @@ $stmt->execute(array($itemId));
 $saldoAtual = (float)$stmt->fetchColumn();
 
 if ($qtdConsumida > $saldoAtual) {
-    flash_set('Saldo insuficiente em estoque para essa produção (disponível: ' . fmt_num($saldoAtual, 2) . ' kg).', 'danger');
+    flash_set('Saldo insuficiente em estoque para essa produção (disponível: ' . fmt_num_min($saldoAtual) . ' kg).', 'danger');
     redirect('producao.php');
 }
 

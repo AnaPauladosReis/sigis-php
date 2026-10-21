@@ -31,7 +31,7 @@ require __DIR__ . '/includes/layout_top.php';
           <tr>
             <td class="ps-3"><?php echo e(date('d/m/Y', strtotime($p['data_producao']))); ?></td>
             <td class="fw-medium text-dark"><?php echo e($p['projeto_nome'] ?: '—'); ?></td>
-            <td><?php echo e($p['item_nome']) . ' · ' . fmt_num($p['qtd_consumida'], 2) . ' kg'; ?></td>
+            <td><?php echo e($p['item_nome']) . ' · ' . fmt_num_min($p['qtd_consumida']) . ' kg'; ?></td>
             <td><?php echo e($p['produto_gerado']); ?></td>
             <td><?php echo fmt_num($p['quantidade_gerada'], 0) . ' ' . e($p['unidade_gerada']); ?></td>
             <td class="pe-3 fw-semibold" style="color:#2E8B57"><?php echo fmt_num($p['residuo_kg'], 1); ?> kg</td>
