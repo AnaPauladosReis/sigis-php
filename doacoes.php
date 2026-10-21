@@ -211,7 +211,7 @@ require __DIR__ . '/includes/layout_top.php';
             ?>
               <tr data-busca="<?php echo e(mb_strtolower($it['nome'])); ?>">
                 <td class="fw-medium text-dark"><?php echo e($it['nome']); ?></td>
-                <td><?php echo fmt_num($it['saldo'], 2) . ' ' . e($it['unidade']); ?></td>
+                <td><?php echo fmt_num_min($it['saldo']) . ' ' . e($it['unidade']); ?></td>
                 <td><input type="number" step="0.001" min="0" max="<?php echo (float)$it['saldo']; ?>" name="qtd[<?php echo $it['item_id']; ?>]" value="<?php echo $qtdAtual ?: ''; ?>" class="form-control form-control-sm" style="width:110px"></td>
                 <td class="fw-bold" style="color:var(--blue)"><?php echo fmt_num_min($it['multiplicador']); ?> / <?php echo e($it['unidade']); ?></td>
               </tr>

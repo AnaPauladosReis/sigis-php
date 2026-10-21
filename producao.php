@@ -73,7 +73,7 @@ require __DIR__ . '/includes/layout_top.php';
             <label class="form-label small fw-semibold">Material consumido (do estoque)</label>
             <select name="item_consumido_id" class="form-select" required>
               <?php foreach ($itens as $it) { ?>
-                <option value="<?php echo $it['item_id']; ?>"><?php echo e($it['nome']); ?> — saldo: <?php echo fmt_num($it['saldo'], 2); ?> <?php echo e($it['unidade']); ?></option>
+                <option value="<?php echo $it['item_id']; ?>"><?php echo e($it['nome']); ?> — saldo: <?php echo fmt_num_min($it['saldo']); ?> <?php echo e($it['unidade']); ?></option>
               <?php } ?>
             </select>
           </div>
