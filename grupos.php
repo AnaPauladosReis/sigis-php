@@ -85,7 +85,7 @@ require __DIR__ . '/includes/layout_top.php';
           </div>
           <div class="mb-3">
             <label class="form-label small fw-semibold">Multiplicador de vidas</label>
-            <input type="number" step="0.001" min="0" name="multiplicador" class="form-control" value="1" required>
+            <input type="number" step="0.1" min="0" name="multiplicador" class="form-control" value="1" required>
           </div>
           <div class="mb-1">
             <label class="form-label small fw-semibold">Projeto / frente de doação</label>
@@ -131,7 +131,7 @@ require __DIR__ . '/includes/layout_top.php';
             </div>
             <div class="mb-3">
               <label class="form-label small fw-semibold">Multiplicador de vidas</label>
-              <input type="number" step="0.001" min="0" name="multiplicador" class="form-control" value="<?php echo e(fmt_num_input($it['multiplicador'])); ?>" required>
+              <input type="number" step="0.1" min="0" name="multiplicador" class="form-control" value="<?php echo e(fmt_num_input($it['multiplicador'])); ?>" required>
             </div>
             <div class="row g-2 mb-1">
               <div class="col">

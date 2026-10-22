@@ -79,7 +79,7 @@ require __DIR__ . '/includes/layout_top.php';
           </div>
           <div class="col">
             <label class="form-label small fw-semibold">Qtd. consumida (kg)</label>
-            <input type="number" step="0.001" min="0.001" name="qtd_consumida" class="form-control" required>
+            <input type="number" step="0.1" min="0" name="qtd_consumida" class="form-control" required>
           </div>
         </div>
         <div class="row g-2 mb-3">
@@ -98,7 +98,7 @@ require __DIR__ . '/includes/layout_top.php';
         </div>
         <div class="mb-1">
           <label class="form-label small fw-semibold">Resíduo reaproveitado (kg)</label>
-          <input type="number" step="0.001" min="0" name="residuo_kg" class="form-control" value="0">
+          <input type="number" step="0.1" min="0" name="residuo_kg" class="form-control" value="0">
         </div>
       </div>
       <div class="modal-footer">

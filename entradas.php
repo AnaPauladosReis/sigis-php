@@ -75,20 +75,22 @@ require __DIR__ . '/includes/layout_top.php';
         <div class="row g-2 mb-3">
           <div class="col">
             <label class="form-label small fw-semibold">Item</label>
-            <select name="item_id" class="form-select" required>
-              <?php foreach ($itens as $it) { ?>
-                <option value="<?php echo $it['id']; ?>"><?php echo e($it['nome']); ?> (<?php echo e($it['unidade']); ?>)</option>
+            <select name="item_id" id="entradaItemSelect" class="form-select" required>
+              <?php foreach ($itens as $it) {
+                  $stepItem = in_array($it['unidade'], array('un', 'par')) ? '1' : '0.1';
+              ?>
+                <option value="<?php echo $it['id']; ?>" data-step="<?php echo $stepItem; ?>"><?php echo e($it['nome']); ?> (<?php echo e($it['unidade']); ?>)</option>
               <?php } ?>
             </select>
           </div>
           <div class="col">
             <label class="form-label small fw-semibold">Quantidade</label>
-            <input type="number" step="0.001" min="0.001" name="quantidade" class="form-control" required>
+            <input type="number" step="1" min="0" id="entradaQuantidade" name="quantidade" class="form-control" required>
           </div>
         </div>
         <div class="mb-1">
           <label class="form-label small fw-semibold">Peso (kg)</label>
-          <input type="number" step="0.001" min="0" name="peso" class="form-control">
+          <input type="number" step="0.1" min="0" name="peso" class="form-control">
         </div>
       </div>
       <div class="modal-footer">
@@ -98,4 +100,16 @@ require __DIR__ . '/includes/layout_top.php';
     </form>
   </div>
 </div>
+<script>
+  (function () {
+    var select = document.getElementById('entradaItemSelect');
+    var quantidade = document.getElementById('entradaQuantidade');
+    function atualizarStep() {
+      var opt = select.options[select.selectedIndex];
+      quantidade.step = (opt && opt.dataset.step) ? opt.dataset.step : '1';
+    }
+    select.addEventListener('change', atualizarStep);
+    atualizarStep();
+  })();
+</script>
 <?php require __DIR__ . '/includes/layout_bottom.php'; ?>
