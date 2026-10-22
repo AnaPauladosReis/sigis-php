@@ -267,11 +267,12 @@ require __DIR__ . '/includes/layout_top.php';
                     <tbody>
                       <?php foreach ($grupo['itens'] as $it) {
                           $qtdAtual = isset($wizard['selecoes'][$it['item_id']]) ? $wizard['selecoes'][$it['item_id']] : 0;
+                          $step = in_array($it['unidade'], array('un', 'par')) ? '1' : '0.1';
                       ?>
                         <tr data-busca="<?php echo e(mb_strtolower($it['nome'])); ?>">
                           <td class="ps-3 fw-medium text-dark"><?php echo e($it['nome']); ?></td>
                           <td><?php echo fmt_num_min($it['saldo']) . ' ' . e($it['unidade']); ?></td>
-                          <td><input type="number" step="0.001" min="0" max="<?php echo (float)$it['saldo']; ?>" data-mult="<?php echo (float)$it['multiplicador']; ?>" name="qtd[<?php echo $it['item_id']; ?>]" value="<?php echo $qtdAtual ?: ''; ?>" class="form-control form-control-sm qtd-doar" style="width:110px"></td>
+                          <td><input type="number" step="<?php echo $step; ?>" min="0" max="<?php echo (float)$it['saldo']; ?>" data-mult="<?php echo (float)$it['multiplicador']; ?>" name="qtd[<?php echo $it['item_id']; ?>]" value="<?php echo $qtdAtual ?: ''; ?>" class="form-control form-control-sm qtd-doar" style="width:110px"></td>
                           <td class="pe-3 fw-bold" style="color:var(--blue)"><?php echo fmt_num_min($it['multiplicador']); ?> / <?php echo e($it['unidade']); ?></td>
                         </tr>
                       <?php } ?>
