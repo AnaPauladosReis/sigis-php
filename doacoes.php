@@ -8,7 +8,16 @@ if (empty($_SESSION['wizard']) || !is_array($_SESSION['wizard'])) {
 $wizard = &$_SESSION['wizard'];
 
 $instituicoes = $pdo->query('SELECT * FROM instituicoes ORDER BY nome')->fetchAll();
-$estoqueItens = $pdo->query('SELECT es.item_id, i.nome, i.unidade, i.multiplicador, es.saldo FROM estoque es JOIN itens i ON i.id = es.item_id ORDER BY i.nome')->fetchAll();
+$estoqueItens = $pdo->query('SELECT es.item_id, i.nome, i.unidade, i.multiplicador, es.saldo, g.id AS grupo_id, g.nome AS grupo_nome FROM estoque es JOIN itens i ON i.id = es.item_id JOIN grupos_impacto g ON g.id = i.grupo_id ORDER BY g.nome, i.nome')->fetchAll();
+
+$gruposItens = array();
+foreach ($estoqueItens as $it) {
+    $gid = $it['grupo_id'];
+    if (!isset($gruposItens[$gid])) {
+        $gruposItens[$gid] = array('nome' => $it['grupo_nome'], 'itens' => array());
+    }
+    $gruposItens[$gid]['itens'][] = $it;
+}
 
 $erro = null;
 
@@ -202,45 +211,118 @@ require __DIR__ . '/includes/layout_top.php';
     <div class="text-muted small mb-3">Destinado a: <strong class="text-dark"><?php echo e($instituicaoSelecionada ? $instituicaoSelecionada['nome'] : '—'); ?></strong></div>
     <input type="text" id="buscaItem" class="form-control mb-3" style="max-width:320px" placeholder="Buscar item por nome...">
     <form method="post">
-      <div class="table-responsive">
-        <table class="table table-sigis">
-          <thead><tr><th>Item</th><th>Disponível</th><th>Qtd. a doar</th><th>Vidas (mult.)</th></tr></thead>
-          <tbody id="listaItens">
-            <?php foreach ($estoqueItens as $it) {
-                $qtdAtual = isset($wizard['selecoes'][$it['item_id']]) ? $wizard['selecoes'][$it['item_id']] : 0;
-            ?>
-              <tr data-busca="<?php echo e(mb_strtolower($it['nome'])); ?>">
-                <td class="fw-medium text-dark"><?php echo e($it['nome']); ?></td>
-                <td><?php echo fmt_num_min($it['saldo']) . ' ' . e($it['unidade']); ?></td>
-                <td><input type="number" step="0.001" min="0" max="<?php echo (float)$it['saldo']; ?>" name="qtd[<?php echo $it['item_id']; ?>]" value="<?php echo $qtdAtual ?: ''; ?>" class="form-control form-control-sm" style="width:110px"></td>
-                <td class="fw-bold" style="color:var(--blue)"><?php echo fmt_num_min($it['multiplicador']); ?> / <?php echo e($it['unidade']); ?></td>
-              </tr>
-            <?php } ?>
-            <tr id="semResultadoItem" class="d-none"><td colspan="4" class="text-center text-muted py-3">Nenhum item encontrado.</td></tr>
-          </tbody>
-        </table>
+      <div class="accordion mb-0" id="acordeaoItens">
+        <?php
+        $temSelecaoAlguma = !empty($wizard['selecoes']);
+        $primeiroGrupo = true;
+        foreach ($gruposItens as $gid => $grupo) {
+            $selecionadosNoGrupo = 0;
+            foreach ($grupo['itens'] as $it) {
+                if (!empty($wizard['selecoes'][$it['item_id']])) { $selecionadosNoGrupo++; }
+            }
+            $expandir = $selecionadosNoGrupo > 0 || (!$temSelecaoAlguma && $primeiroGrupo);
+            $primeiroGrupo = false;
+        ?>
+          <div class="accordion-item item-grupo" data-grupo-id="<?php echo $gid; ?>" data-expandido-inicial="<?php echo $expandir ? '1' : '0'; ?>">
+            <h2 class="accordion-header">
+              <button class="accordion-button <?php echo $expandir ? '' : 'collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#grupo-<?php echo $gid; ?>">
+                <?php echo e($grupo['nome']); ?>
+                <span class="badge rounded-pill ms-2" style="background:var(--bg);color:var(--muted);font-weight:600"><?php echo count($grupo['itens']); ?> itens</span>
+                <?php if ($selecionadosNoGrupo > 0) { ?>
+                  <span class="badge rounded-pill ms-2 badge-selecionados"><?php echo $selecionadosNoGrupo; ?> selecionado<?php echo $selecionadosNoGrupo > 1 ? 's' : ''; ?></span>
+                <?php } ?>
+              </button>
+            </h2>
+            <div id="grupo-<?php echo $gid; ?>" class="accordion-collapse collapse <?php echo $expandir ? 'show' : ''; ?>">
+              <div class="accordion-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-sigis mb-0">
+                    <thead><tr><th class="ps-3">Item</th><th>Disponível</th><th>Qtd. a doar</th><th class="pe-3">Vidas (mult.)</th></tr></thead>
+                    <tbody>
+                      <?php foreach ($grupo['itens'] as $it) {
+                          $qtdAtual = isset($wizard['selecoes'][$it['item_id']]) ? $wizard['selecoes'][$it['item_id']] : 0;
+                      ?>
+                        <tr data-busca="<?php echo e(mb_strtolower($it['nome'])); ?>">
+                          <td class="ps-3 fw-medium text-dark"><?php echo e($it['nome']); ?></td>
+                          <td><?php echo fmt_num_min($it['saldo']) . ' ' . e($it['unidade']); ?></td>
+                          <td><input type="number" step="0.001" min="0" max="<?php echo (float)$it['saldo']; ?>" data-mult="<?php echo (float)$it['multiplicador']; ?>" name="qtd[<?php echo $it['item_id']; ?>]" value="<?php echo $qtdAtual ?: ''; ?>" class="form-control form-control-sm qtd-doar" style="width:110px"></td>
+                          <td class="pe-3 fw-bold" style="color:var(--blue)"><?php echo fmt_num_min($it['multiplicador']); ?> / <?php echo e($it['unidade']); ?></td>
+                        </tr>
+                      <?php } ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        <?php } ?>
+        <div id="semResultadoItem" class="d-none text-center text-muted py-3">Nenhum item encontrado.</div>
       </div>
-      <div class="d-flex justify-content-between">
-        <button type="submit" formnovalidate name="acao" value="voltar_passo1" class="btn btn-sigis-outline">Voltar</button>
-        <button type="submit" name="acao" value="ir_passo3" class="btn btn-sigis">Revisar doação</button>
+      <div class="selecao-footer d-flex justify-content-between align-items-center">
+        <div class="small text-muted">
+          <span id="resumoSelecaoCount" class="fw-bold text-dark">0</span>
+          <span id="resumoSelecaoLabel">itens selecionados</span>
+          <span class="mx-1">·</span>
+          <span id="resumoSelecaoVidas" class="fw-bold" style="color:var(--blue)">0,0</span> vidas estimadas
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" formnovalidate name="acao" value="voltar_passo1" class="btn btn-sigis-outline">Voltar</button>
+          <button type="submit" name="acao" value="ir_passo3" class="btn btn-sigis">Revisar doação</button>
+        </div>
       </div>
     </form>
   </div>
   <script>
     (function () {
       var input = document.getElementById('buscaItem');
-      var linhas = document.querySelectorAll('#listaItens tr[data-busca]');
+      var grupos = document.querySelectorAll('.item-grupo');
       var semResultado = document.getElementById('semResultadoItem');
-      input.addEventListener('input', function () {
+
+      function aplicarBusca() {
         var termo = input.value.trim().toLowerCase();
-        var visiveis = 0;
-        linhas.forEach(function (tr) {
-          var match = tr.dataset.busca.indexOf(termo) !== -1;
-          tr.classList.toggle('d-none', !match);
-          if (match) visiveis++;
+        var totalVisivel = 0;
+        grupos.forEach(function (grupo) {
+          var linhas = grupo.querySelectorAll('tr[data-busca]');
+          var visiveisGrupo = 0;
+          linhas.forEach(function (tr) {
+            var match = tr.dataset.busca.indexOf(termo) !== -1;
+            tr.classList.toggle('d-none', !match);
+            if (match) visiveisGrupo++;
+          });
+          grupo.classList.toggle('d-none', visiveisGrupo === 0);
+          totalVisivel += visiveisGrupo;
+
+          var collapseEl = grupo.querySelector('.accordion-collapse');
+          var bsCollapse = bootstrap.Collapse.getOrCreateInstance(collapseEl, { toggle: false });
+          if (termo) {
+            if (visiveisGrupo > 0) { bsCollapse.show(); }
+          } else {
+            if (grupo.dataset.expandidoInicial === '1') { bsCollapse.show(); } else { bsCollapse.hide(); }
+          }
         });
-        semResultado.classList.toggle('d-none', visiveis !== 0);
-      });
+        semResultado.classList.toggle('d-none', totalVisivel !== 0);
+      }
+      input.addEventListener('input', aplicarBusca);
+    })();
+
+    (function () {
+      var inputs = document.querySelectorAll('.qtd-doar');
+      var elCount = document.getElementById('resumoSelecaoCount');
+      var elLabel = document.getElementById('resumoSelecaoLabel');
+      var elVidas = document.getElementById('resumoSelecaoVidas');
+
+      function atualizarResumo() {
+        var count = 0, vidas = 0;
+        inputs.forEach(function (inp) {
+          var v = parseFloat(inp.value);
+          if (v > 0) { count++; vidas += v * parseFloat(inp.dataset.mult || 0); }
+        });
+        elCount.textContent = count;
+        elLabel.textContent = count === 1 ? 'item selecionado' : 'itens selecionados';
+        elVidas.textContent = vidas.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+      }
+      inputs.forEach(function (inp) { inp.addEventListener('input', atualizarResumo); });
+      atualizarResumo();
     })();
   </script>
 <?php } elseif ($wizard['step'] === 3) { ?>

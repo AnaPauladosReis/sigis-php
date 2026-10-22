@@ -78,6 +78,12 @@ a:hover{color:var(--blue-dark)}
 .inst-card{border:1.5px solid var(--border);border-radius:8px;cursor:pointer}
 .inst-card.selected{border-color:var(--blue);background:var(--accent-bg)}
 .summary-box{background:var(--accent-bg);border-radius:10px}
+.item-grupo .accordion-button{font-size:.85rem;font-weight:700;background:#fff;box-shadow:none;color:var(--navy)}
+.item-grupo .accordion-button:not(.collapsed){background:var(--accent-bg);color:var(--accent-text)}
+.item-grupo .accordion-button:focus{box-shadow:none}
+.item-grupo .accordion-body{border-top:1px solid var(--border)}
+.badge-selecionados{background:var(--blue);color:#fff;font-weight:600}
+.selecao-footer{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--border);margin:12px -1rem -1rem;padding:.9rem 1rem;z-index:5}
 
 /* termo — segue o padrão da "Declaração Doação de Itens (Parceiros)" do SESI */
 /* alturas/margens calibradas para caber em uma única página Letter/A4 na impressão */

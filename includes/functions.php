@@ -71,6 +71,12 @@ function e($s) {
     return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
 }
 
+/** Acrescenta "?v=<timestamp>" a um asset estatico (ex: assets/css/style.css) para evitar cache velho do navegador apos deploys. */
+function asset_url($relativePath) {
+    $v = @filemtime(__DIR__ . '/../' . $relativePath);
+    return $relativePath . ($v ? ('?v=' . $v) : '');
+}
+
 function flash_set($msg, $type = 'success') {
     $_SESSION['flash'] = array('msg' => $msg, 'type' => $type);
 }
