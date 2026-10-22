@@ -174,18 +174,22 @@ require __DIR__ . '/includes/layout_top.php';
       <div class="row g-2 mb-3" id="listaInstituicoes">
         <?php foreach ($instituicoes as $i) {
             $busca = mb_strtolower($i['nome'] . ' ' . $i['bairro'] . ' ' . $i['tipo']);
+            $meta = implode(' · ', array_filter(array($i['bairro'], $i['tipo'])));
         ?>
           <div class="col-md-6 inst-card-col" data-busca="<?php echo e($busca); ?>">
             <label class="inst-card d-block p-2 px-3">
               <input type="radio" name="instituicao_id" value="<?php echo $i['id']; ?>" class="form-check-input me-2" <?php echo ($wizard['instituicao_id'] == $i['id']) ? 'checked' : ''; ?>>
               <span class="fw-semibold" style="font-size:.9rem"><?php echo e($i['nome']); ?></span>
-              <div class="text-muted small ms-4"><?php echo e($i['bairro']) . ' · ' . e($i['tipo']); ?></div>
+              <?php if ($meta) { ?><div class="text-muted small ms-4"><?php echo e($meta); ?></div><?php } ?>
             </label>
           </div>
         <?php } ?>
         <div class="col-12 text-muted small py-2 d-none" id="semResultadoInstituicao">Nenhuma instituição encontrada.</div>
       </div>
-      <div class="text-end"><button type="submit" class="btn btn-sigis">Continuar</button></div>
+      <div class="selecao-footer d-flex justify-content-between align-items-center">
+        <div class="small text-muted" id="resumoInstSelecionada">Nenhuma instituição selecionada</div>
+        <button type="submit" class="btn btn-sigis">Continuar</button>
+      </div>
     </form>
   </div>
   <script>
@@ -203,6 +207,28 @@ require __DIR__ . '/includes/layout_top.php';
         });
         semResultado.classList.toggle('d-none', visiveis !== 0);
       });
+    })();
+
+    (function () {
+      var radios = document.querySelectorAll('input[name="instituicao_id"]');
+      var resumo = document.getElementById('resumoInstSelecionada');
+
+      function atualizarResumo() {
+        var checked = document.querySelector('input[name="instituicao_id"]:checked');
+        resumo.textContent = '';
+        if (checked) {
+          var nome = checked.closest('label').querySelector('.fw-semibold').textContent;
+          resumo.appendChild(document.createTextNode('Destinado a: '));
+          var strong = document.createElement('strong');
+          strong.className = 'text-dark';
+          strong.textContent = nome;
+          resumo.appendChild(strong);
+        } else {
+          resumo.textContent = 'Nenhuma instituição selecionada';
+        }
+      }
+      radios.forEach(function (r) { r.addEventListener('change', atualizarResumo); });
+      atualizarResumo();
     })();
   </script>
 <?php } elseif ($wizard['step'] === 2) { ?>
