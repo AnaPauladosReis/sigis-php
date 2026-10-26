@@ -8,7 +8,7 @@ if (empty($_SESSION['wizard']) || !is_array($_SESSION['wizard'])) {
 $wizard = &$_SESSION['wizard'];
 
 $instituicoes = $pdo->query('SELECT * FROM instituicoes ORDER BY nome')->fetchAll();
-$estoqueItens = $pdo->query('SELECT es.item_id, i.nome, i.unidade, i.multiplicador, es.saldo, g.id AS grupo_id, g.nome AS grupo_nome FROM estoque es JOIN itens i ON i.id = es.item_id JOIN grupos_impacto g ON g.id = i.grupo_id ORDER BY g.nome, i.nome')->fetchAll();
+$estoqueItens = $pdo->query('SELECT es.item_id, i.nome, i.unidade, i.multiplicador, i.projeto_id, es.saldo, g.id AS grupo_id, g.nome AS grupo_nome FROM estoque es JOIN itens i ON i.id = es.item_id JOIN grupos_impacto g ON g.id = i.grupo_id ORDER BY g.nome, i.nome')->fetchAll();
 
 $gruposItens = array();
 foreach ($estoqueItens as $it) {
@@ -61,20 +61,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $itensPorId = array();
             foreach ($estoqueItens as $it) { $itensPorId[$it['item_id']] = $it; }
 
+            // projeto da doacao = projeto comum a todos os itens selecionados; NULL se forem de projetos diferentes
+            $projetosSelecionados = array();
             foreach ($wizard['selecoes'] as $itemId => $qtd) {
                 if (!isset($itensPorId[$itemId]) || $qtd > (float)$itensPorId[$itemId]['saldo']) {
                     $erro = 'Saldo insuficiente para um dos itens selecionados. Revise as quantidades.';
                     break;
                 }
                 $vidasTotal += $qtd * (float)$itensPorId[$itemId]['multiplicador'];
+                $projetosSelecionados[(int)$itensPorId[$itemId]['projeto_id']] = true;
             }
             $vidasTotal = round($vidasTotal, 1);
+            $projetoId = count($projetosSelecionados) === 1 ? array_key_first($projetosSelecionados) : null;
+            if ($projetoId === 0) { $projetoId = null; }
 
             if (!$erro) {
                 $pdo->beginTransaction();
                 try {
-                    $stmt = $pdo->prepare('INSERT INTO doacoes (instituicao_id, projeto_id, data_doacao, vidas_impactadas, criado_por) VALUES (?, NULL, CURDATE(), ?, ?)');
-                    $stmt->execute(array($wizard['instituicao_id'], $vidasTotal, $_SESSION['user_id']));
+                    $stmt = $pdo->prepare('INSERT INTO doacoes (instituicao_id, projeto_id, data_doacao, vidas_impactadas, criado_por) VALUES (?, ?, CURDATE(), ?, ?)');
+                    $stmt->execute(array($wizard['instituicao_id'], $projetoId, $vidasTotal, $_SESSION['user_id']));
                     $doacaoId = (int)$pdo->lastInsertId();
 
                     $stmtItem = $pdo->prepare('INSERT INTO doacao_itens (doacao_id, item_id, quantidade) VALUES (?, ?, ?)');
