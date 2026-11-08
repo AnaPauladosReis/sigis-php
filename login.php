@@ -35,8 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SIGIS · Acessar plataforma</title>
+<link rel="icon" type="image/png" href="<?php echo e(asset_url('assets/img/favicon.png')); ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="<?php echo e(asset_url('assets/css/style.css')); ?>" rel="stylesheet">
 </head>
@@ -46,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="blob1"></div><div class="blob2"></div>
     <div class="position-relative">
       <div class="d-flex align-items-center gap-2 mb-5">
-        <div class="brand-mark"></div>
-        <div class="fs-4 fw-bold">SIGIS</div>
+        <div class="brand-mark"><img src="<?php echo e(asset_url('assets/img/logo-hands.png')); ?>" alt="SIGIS"></div>
+        <div class="fs-3 brand-word">SIGIS</div>
       </div>
       <div class="text-uppercase small fw-semibold mb-2" style="color:#8FA8D6;letter-spacing:1.5px">Gerência de Responsabilidade Social</div>
       <h1 class="fw-bold mb-3" style="font-size:2.1rem;max-width:480px;line-height:1.25">Sistema Integrado de Gestão de Impacto Social, Produção Social e Doações</h1>

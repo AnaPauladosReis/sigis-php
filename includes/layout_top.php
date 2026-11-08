@@ -52,8 +52,9 @@ $flash = flash_get();
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SIGIS · <?php echo e($pageTitle); ?></title>
+<link rel="icon" type="image/png" href="<?php echo e(asset_url('assets/img/favicon.png')); ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="<?php echo e(asset_url('assets/css/style.css')); ?>" rel="stylesheet">
@@ -62,8 +63,8 @@ $flash = flash_get();
 <div class="d-flex">
   <nav class="sigis-sidebar flex-column p-3 d-flex">
     <div class="d-flex align-items-center gap-2 mb-4 px-1">
-      <div class="brand-mark sm"></div>
-      <div class="text-white fw-bold fs-6">SIGIS</div>
+      <div class="brand-mark sm"><img src="<?php echo e(asset_url('assets/img/logo-hands.png')); ?>" alt="SIGIS"></div>
+      <div class="text-white brand-word fs-5">SIGIS</div>
     </div>
     <?php foreach ($navConfig as $group) { ?>
       <div class="nav-group-label"><?php echo e($group['label']); ?></div>

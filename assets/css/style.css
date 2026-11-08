@@ -23,8 +23,10 @@ a:hover{color:var(--blue-dark)}
 .login-left{background:var(--navy);color:#fff;position:relative;overflow:hidden;min-height:100vh}
 .login-left .blob1{position:absolute;top:-120px;right:-120px;width:360px;height:360px;border-radius:50%;background:rgba(43,95,173,.35)}
 .login-left .blob2{position:absolute;bottom:-160px;left:-80px;width:300px;height:300px;border-radius:50%;background:rgba(43,95,173,.2)}
-.brand-mark{width:36px;height:36px;background:var(--blue);border-radius:8px}
-.brand-mark.sm{width:30px;height:30px;border-radius:7px}
+.brand-mark{height:36px}
+.brand-mark.sm{height:30px}
+.brand-mark img{height:100%;width:auto;display:block}
+.brand-word{font-family:'Baloo 2',sans-serif;font-weight:700}
 
 /* ---- app shell ---- */
 .sigis-sidebar{width:240px;background:var(--navy);min-height:100vh}
