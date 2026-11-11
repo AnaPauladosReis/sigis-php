@@ -48,7 +48,18 @@ require __DIR__ . '/includes/layout_top.php';
       <div class="card p-3 h-100">
         <div class="d-flex justify-content-between align-items-start mb-2">
           <div class="fw-bold" style="font-size:1rem"><?php echo e($p['nome']); ?></div>
-          <span class="badge rounded-pill" style="background:<?php echo $badgeBg; ?>;color:<?php echo $badgeColor; ?>;font-weight:700"><?php echo e($p['status']); ?></span>
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge rounded-pill" style="background:<?php echo $badgeBg; ?>;color:<?php echo $badgeColor; ?>;font-weight:700"><?php echo e($p['status']); ?></span>
+            <button type="button" class="btn btn-sm btn-icon-edit" title="Editar projeto" data-bs-toggle="modal" data-bs-target="#modalEditProjeto<?php echo $p['id']; ?>">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <form method="post" action="projetos_excluir.php" class="d-inline" onsubmit="return confirm('Excluir o projeto \'<?php echo e($p['nome']); ?>\'? Esta ação não pode ser desfeita.');">
+              <input type="hidden" name="id" value="<?php echo $p['id']; ?>">
+              <button type="submit" class="btn btn-sm btn-icon-delete" title="Excluir projeto">
+                <i class="bi bi-trash"></i>
+              </button>
+            </form>
+          </div>
         </div>
         <div class="text-muted small mb-3" style="min-height:40px"><?php echo e($p['descricao']); ?></div>
         <div class="d-flex gap-4 pt-2 border-top project-stats">
@@ -98,4 +109,49 @@ require __DIR__ . '/includes/layout_top.php';
     </form>
   </div>
 </div>
+
+<?php foreach ($projetos as $p) { ?>
+  <div class="modal fade" id="modalEditProjeto<?php echo $p['id']; ?>" tabindex="-1">
+    <div class="modal-dialog">
+      <form class="modal-content" method="post" action="projetos_editar.php">
+        <input type="hidden" name="id" value="<?php echo $p['id']; ?>">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Projeto Social</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Nome do projeto</label>
+            <input type="text" name="nome" class="form-control" value="<?php echo e($p['nome']); ?>" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Descrição</label>
+            <textarea name="descricao" class="form-control" rows="4"><?php echo e($p['descricao']); ?></textarea>
+          </div>
+          <div class="row g-2">
+            <div class="col">
+              <label class="form-label small fw-semibold">Grupo de impacto vinculado</label>
+              <select name="grupo_id" class="form-select">
+                <?php foreach ($gruposAll as $g) { ?>
+                  <option value="<?php echo $g['id']; ?>" <?php echo $p['grupo_id'] == $g['id'] ? 'selected' : ''; ?>><?php echo e($g['nome']); ?></option>
+                <?php } ?>
+              </select>
+            </div>
+            <div class="col">
+              <label class="form-label small fw-semibold">Status</label>
+              <select name="status" class="form-select">
+                <option value="Ativo" <?php echo $p['status'] === 'Ativo' ? 'selected' : ''; ?>>Ativo</option>
+                <option value="Encerrado" <?php echo $p['status'] === 'Encerrado' ? 'selected' : ''; ?>>Encerrado</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sigis-outline" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-sigis">Salvar alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+<?php } ?>
 <?php require __DIR__ . '/includes/layout_bottom.php'; ?>
