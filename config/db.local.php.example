@@ -1,0 +1,10 @@
+<?php
+/**
+ * Copie para db.local.php e preencha com as credenciais reais.
+ * Usado em hospedagens compartilhadas onde variaveis de ambiente nao chegam ao PHP.
+ * Nao e versionado (veja .gitignore).
+ */
+$DB_HOST = 'localhost';
+$DB_NAME = 'u000000000_sigis';
+$DB_USER = 'u000000000_sigis';
+$DB_PASS = 'troque-esta-senha';

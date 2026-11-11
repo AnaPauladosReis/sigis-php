@@ -8,6 +8,11 @@ $DB_USER = getenv('DB_USER') ?: 'root';
 $DB_PASS = getenv('DB_PASS') ?: '';
 $DB_CHARSET = 'utf8mb4';
 
+// Override local nao versionado, para hospedagens compartilhadas sem suporte a variaveis de ambiente.
+if (is_file(__DIR__ . '/db.local.php')) {
+    require __DIR__ . '/db.local.php';
+}
+
 try {
     $dsn = "mysql:host={$DB_HOST};dbname={$DB_NAME};charset={$DB_CHARSET}";
     $pdo = new PDO($dsn, $DB_USER, $DB_PASS, array(
