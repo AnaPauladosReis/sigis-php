@@ -17,6 +17,8 @@ a:hover{color:var(--blue-dark)}
 .btn-sigis-green:hover{background:#256e46;border-color:#256e46;color:#fff}
 .btn-icon-edit{width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--muted)}
 .btn-icon-edit:hover{background:var(--accent-bg);border-color:var(--blue);color:var(--blue)}
+.btn-icon-delete{width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--muted)}
+.btn-icon-delete:hover{background:var(--red-bg);border-color:var(--red);color:var(--red)}
 
 /* ---- login ---- */
 .login-wrap{min-height:100vh}
