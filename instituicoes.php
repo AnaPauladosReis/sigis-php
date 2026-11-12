@@ -36,15 +36,17 @@ require __DIR__ . '/includes/layout_top.php';
             <td><?php echo e($i['tipo']); ?></td>
             <td class="fw-semibold" style="color:<?php echo $i['acolhimento'] ? '#2E8B57' : '#98A2B3'; ?>"><?php echo $i['acolhimento'] ? 'Sim' : 'Não'; ?></td>
             <td class="pe-3 text-end">
-              <button type="button" class="btn btn-sm btn-icon-edit" title="Editar instituição" data-bs-toggle="modal" data-bs-target="#modalEditInstituicao<?php echo $i['id']; ?>">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <form method="post" action="instituicoes_excluir.php" class="d-inline" onsubmit="return confirm('Excluir a instituição \'<?php echo e($i['nome']); ?>\'? Esta ação não pode ser desfeita.');">
-                <input type="hidden" name="id" value="<?php echo $i['id']; ?>">
-                <button type="submit" class="btn btn-sm btn-icon-delete" title="Excluir instituição">
-                  <i class="bi bi-trash"></i>
+              <div class="d-flex gap-1 justify-content-end flex-nowrap">
+                <button type="button" class="btn btn-sm btn-icon-edit" title="Editar instituição" data-bs-toggle="modal" data-bs-target="#modalEditInstituicao<?php echo $i['id']; ?>">
+                  <i class="bi bi-pencil"></i>
                 </button>
-              </form>
+                <form method="post" action="instituicoes_excluir.php" class="d-inline" onsubmit="return confirm('Excluir a instituição \'<?php echo e($i['nome']); ?>\'? Esta ação não pode ser desfeita.');">
+                  <input type="hidden" name="id" value="<?php echo $i['id']; ?>">
+                  <button type="submit" class="btn btn-sm btn-icon-delete" title="Excluir instituição">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+              </div>
             </td>
           </tr>
         <?php } ?>
