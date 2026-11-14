@@ -119,7 +119,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 **Aceite:** o ID da sessão muda após o login; a 6ª senha errada seguida bloqueia mesmo com a senha certa.
 
-### [ ] 1.5 Não vazar mensagens de erro
+### [x] 1.5 Não vazar mensagens de erro
 **Problema:** `config/db.php` imprime `$e->getMessage()` e `doacoes.php` mostra a mensagem da exceção ao usuário; exceções não tratadas (ex.: CNPJ duplicado em `instituicoes_salvar.php`) mostram erro cru do PHP.
 **Passos:**
 - `config/db.php`: registrar com `error_log()` e mostrar só "Erro ao conectar ao banco de dados."
