@@ -108,7 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $pdo->commit();
                 } catch (Exception $ex) {
                     $pdo->rollBack();
-                    $erro = 'Não foi possível registrar a doação: ' . $ex->getMessage();
+                    error_log($ex->getMessage());
+                    $erro = 'Não foi possível registrar a doação. Tente novamente.';
                 }
 
                 if (!$erro) {

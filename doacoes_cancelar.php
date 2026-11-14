@@ -32,7 +32,8 @@ try {
     flash_set('Doação cancelada. Os itens foram devolvidos ao estoque.');
 } catch (Exception $ex) {
     $pdo->rollBack();
-    flash_set('Não foi possível cancelar a doação: ' . $ex->getMessage(), 'danger');
+    error_log($ex->getMessage());
+    flash_set('Não foi possível cancelar a doação. Tente novamente.', 'danger');
 }
 
 redirect('doacoes_historico.php');

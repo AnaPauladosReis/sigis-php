@@ -1,4 +1,13 @@
 <?php
+set_exception_handler(function ($ex) {
+    error_log($ex->getMessage());
+    if (!headers_sent()) {
+        http_response_code(500);
+    }
+    require __DIR__ . '/erro.php';
+    exit;
+});
+
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params(array(
         'httponly' => true,

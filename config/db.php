@@ -21,5 +21,6 @@ try {
         PDO::ATTR_EMULATE_PREPARES => false,
     ));
 } catch (PDOException $e) {
-    die('Erro ao conectar ao banco de dados.' . htmlspecialchars($e->getMessage()));
+    error_log($e->getMessage());
+    die('Erro ao conectar ao banco de dados.');
 }

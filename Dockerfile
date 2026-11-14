@@ -5,6 +5,7 @@ RUN docker-php-ext-install pdo pdo_mysql mysqli \
 
 COPY docker/apache-sigis.conf /etc/apache2/conf-enabled/apache-sigis.conf
 COPY docker/php-uploads.ini /usr/local/etc/php/conf.d/php-uploads.ini
+COPY docker/php-errors.ini /usr/local/etc/php/conf.d/php-errors.ini
 
 COPY . /var/www/html/
 
