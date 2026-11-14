@@ -88,7 +88,7 @@ function validar_data($data, $permitirFutura = false) {
     if (!$dt || $dt->format('Y-m-d') !== $data) {
         return false;
     }
-    if (!$permitirFutura && $dt > new DateTime('today')) {
+    if (!$permitirFutura && $dt->format('Y-m-d') > date('Y-m-d')) {
         return false;
     }
     return true;
