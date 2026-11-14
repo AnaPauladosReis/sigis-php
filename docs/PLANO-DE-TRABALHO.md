@@ -226,7 +226,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 Migration: `ativo TINYINT(1) NOT NULL DEFAULT 1` em `grupos_impacto`, `itens`, `instituicoes`. Em `projetos`, padronizar `status` em `Ativo`/`Inativo`/`Encerrado`.
 **Aceite:** migration aplica num banco existente sem perder dados.
 
-### [ ] 4.2 Projetos sociais: editar e inativar (RF003)
+### [x] 4.2 Projetos sociais: editar e inativar (RF003)
 `projetos.php` ganha botão editar (modal igual ao de itens) e ativar/inativar; `projetos_salvar.php` passa a tratar `id` (update) além do insert.
 **Aceite:** projeto inativado não aparece em Entradas/Produção, mas continua nos relatórios.
 
