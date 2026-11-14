@@ -110,7 +110,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 **Aceite:** `grep -L "csrf_check" *_salvar.php grupos_item_editar.php` não retorna nada; um POST sem token devolve 400.
 
-### [ ] 1.4 Endurecer login e sessão
+### [x] 1.4 Endurecer login e sessão
 **Passos:**
 - `session_regenerate_id(true)` logo após o login bem-sucedido.
 - Antes do `session_start()` em `bootstrap.php`: `session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax', 'secure' => !empty($_SERVER['HTTPS'])])`.
