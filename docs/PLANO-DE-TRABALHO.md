@@ -203,7 +203,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 **Aceite:** um usuário Gestor não vê "Direcionamento de Doações" no menu e recebe 403 ao acessar `doacoes.php` ou fazer POST em `entradas_salvar.php`.
 
-### [ ] 3.2 Gestão de usuários (RF002)
+### [x] 3.2 Gestão de usuários (RF002)
 **Passos:**
 - Migration: `usuarios.ativo TINYINT(1) NOT NULL DEFAULT 1`, `usuarios.trocar_senha TINYINT(1) NOT NULL DEFAULT 0`.
 - `usuarios.php` + `usuarios_salvar.php` (só Administrador): listar, criar, editar nome/e-mail/perfil, ativar/desativar, redefinir senha (gera senha temporária e marca `trocar_senha = 1`).
@@ -212,7 +212,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 **Aceite:** criar um Colaborador, entrar com ele, desativá-lo pelo admin → o próximo login é recusado.
 
-### [ ] 3.3 Meu perfil (RF021)
+### [x] 3.3 Meu perfil (RF021)
 **Passos:** `perfil.php` + `perfil_salvar.php`: ver dados, alterar nome e senha (pedindo a senha atual, mínimo 8 caracteres). Link no rodapé da sidebar.
 **Aceite:** trocar a própria senha e entrar com a nova.
 

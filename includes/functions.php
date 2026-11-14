@@ -8,6 +8,12 @@ function require_login() {
         header('Location: login.php');
         exit;
     }
+    $telasPermitidasComTrocaSenha = array('perfil.php', 'perfil_salvar.php', 'logout.php');
+    if (!empty($_SESSION['user_trocar_senha']) && !in_array(basename($_SERVER['PHP_SELF']), $telasPermitidasComTrocaSenha, true)) {
+        flash_set('Defina uma nova senha para continuar.', 'danger');
+        header('Location: perfil.php');
+        exit;
+    }
 }
 
 function current_user() {
@@ -69,6 +75,22 @@ function fmt_qtd_termo($qtd, $unidade) {
 
 function e($s) {
     return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
+}
+
+/**
+ * Trava minima so para as telas de usuarios, ate a matriz de permissoes da
+ * tarefa 3.1 (require_perfil()/pode()) ser definida.
+ */
+function exigir_administrador() {
+    if (empty($_SESSION['user_perfil']) || $_SESSION['user_perfil'] !== 'Administrador') {
+        http_response_code(403);
+        exit('Acesso restrito a administradores.');
+    }
+}
+
+/** Gera uma senha temporaria legivel para redefinicao/criacao de usuario. */
+function gerar_senha_temporaria() {
+    return bin2hex(random_bytes(4));
 }
 
 function csrf_token() {
