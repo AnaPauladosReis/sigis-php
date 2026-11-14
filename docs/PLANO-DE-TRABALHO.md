@@ -245,7 +245,7 @@ Botão ativar/inativar no modal de edição. Itens inativos saem de Entradas, Pr
 
 **Aceite:** abrir uma instituição e ver todas as doações e o total de vidas impactadas.
 
-### [ ] 4.6 Origens das entradas como cadastro (RF008, RN011, RN012)
+### [x] 4.6 Origens das entradas como cadastro (RF008, RN011, RN012)
 **Problema:** `entradas.origem` é texto livre (`VARCHAR(150)`).
 **Passos:**
 - Tabela `origens (id, nome, categoria, ativo)` com categorias: Indústria, Multa social, Biblioteca, Campanha, Gincana, Troca solidária, Doação espontânea, Outra.
