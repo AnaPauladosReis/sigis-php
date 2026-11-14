@@ -173,7 +173,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 **Aceite:** enviar formulários manipulados (ID inexistente, quantidade negativa, data `2026-13-40`) gera mensagem de erro, nunca erro do PHP.
 
-### [ ] 2.3 Unidade correta na produção social
+### [x] 2.3 Unidade correta na produção social
 **Problema:** `producao.php` rotula a quantidade consumida como "kg" e `producao_salvar.php` diz "disponível: X kg", mas os itens têm unidades `un`, `par`, `L`, `kg`.
 **Passos:** mostrar a unidade real do item no formulário (ao trocar o item) e nas mensagens/listagens.
 **Aceite:** consumir "Toalhas de Mesa" mostra "un".
