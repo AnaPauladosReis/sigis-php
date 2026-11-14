@@ -79,7 +79,12 @@ require __DIR__ . '/includes/layout_top.php';
         <tbody>
           <?php foreach ($g['itens'] as $it) { ?>
             <tr>
-              <td class="ps-3 fw-medium text-dark"><?php echo e($it['nome']); ?></td>
+              <td class="ps-3 fw-medium text-dark">
+                <?php echo e($it['nome']); ?>
+                <?php if (!$it['ativo']) { ?>
+                  <span class="badge rounded-pill ms-1" style="background:#EEF0F3;color:#98A2B3;font-weight:700">Inativo</span>
+                <?php } ?>
+              </td>
               <td class="text-muted"><?php echo e($it['projeto_nome']); ?></td>
               <td><?php echo e($it['unidade']); ?></td>
               <td><?php echo fmt_num_min($it['peso_unitario']); ?> kg</td>
@@ -226,6 +231,10 @@ require __DIR__ . '/includes/layout_top.php';
                   <?php } ?>
                 </select>
               </div>
+            </div>
+            <div class="form-check mt-2">
+              <input type="checkbox" class="form-check-input" id="itemAtivoCk<?php echo $it['id']; ?>" name="ativo" value="1" <?php echo $it['ativo'] ? 'checked' : ''; ?>>
+              <label class="form-check-label small" for="itemAtivoCk<?php echo $it['id']; ?>">Item ativo</label>
             </div>
           </div>
           <div class="modal-footer">

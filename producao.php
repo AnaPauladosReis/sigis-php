@@ -10,7 +10,7 @@ $sql = "SELECT pr.*, p.nome as projeto_nome, i.nome as item_nome, i.unidade as i
 $producoes = $pdo->query($sql)->fetchAll();
 
 $projetos = $pdo->query("SELECT * FROM projetos WHERE status = 'Ativo' ORDER BY nome")->fetchAll();
-$itens = $pdo->query("SELECT es.item_id, i.nome, i.unidade, es.saldo FROM estoque es JOIN itens i ON i.id = es.item_id ORDER BY i.nome")->fetchAll();
+$itens = $pdo->query("SELECT es.item_id, i.nome, i.unidade, es.saldo FROM estoque es JOIN itens i ON i.id = es.item_id WHERE i.ativo = 1 ORDER BY i.nome")->fetchAll();
 
 require __DIR__ . '/includes/layout_top.php';
 ?>
