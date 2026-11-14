@@ -5,6 +5,7 @@ require_login();
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('producao.php');
 }
+csrf_check();
 
 $data = $_POST['data_producao'];
 $projetoId = !empty($_POST['projeto_id']) ? (int)$_POST['projeto_id'] : null;

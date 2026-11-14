@@ -70,6 +70,7 @@ require __DIR__ . '/includes/layout_top.php';
 <div class="modal fade" id="modalEvidencia" tabindex="-1">
   <div class="modal-dialog">
     <form class="modal-content" method="post" action="evidencias_salvar.php" enctype="multipart/form-data">
+      <?php csrf_field(); ?>
       <div class="modal-header">
         <h5 class="modal-title">Nova Evidência</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

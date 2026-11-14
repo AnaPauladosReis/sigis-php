@@ -42,6 +42,7 @@ require __DIR__ . '/includes/layout_top.php';
             <td class="pe-3 text-end">
               <div class="d-flex gap-1 justify-content-end flex-nowrap">
                 <form method="post" action="doacoes_cancelar.php" class="d-inline" onsubmit="return confirm('Cancelar esta doação para \'<?php echo e($d['instituicao_nome']); ?>\'? Os itens voltarão ao estoque e o termo <?php echo e($d['termo_numero']); ?> será removido. Esta ação não pode ser desfeita.');">
+                  <?php csrf_field(); ?>
                   <input type="hidden" name="id" value="<?php echo $d['id']; ?>">
                   <button type="submit" class="btn btn-sm btn-icon-delete" title="Cancelar doação (estornar itens ao estoque)">
                     <i class="bi bi-arrow-counterclockwise"></i>

@@ -1,13 +1,34 @@
 -- =========================================================
 -- SIGIS - Dados de teste (seed)
--- Preenche o estoque com entradas de materiais e registra
--- algumas doacoes de exemplo, para permitir testar o fluxo
--- de Direcionamento de Doacoes sem depender da planilha real.
+-- Cria 4 instituicoes ficticias, preenche o estoque com
+-- entradas de materiais e registra algumas doacoes e
+-- evidencias de exemplo, para permitir testar o sistema sem
+-- depender da planilha real de instituicoes.
+-- So executa com docker compose quando SEED_TESTE=1 (ver
+-- docker-compose.yml e database/migrations/README.md).
 -- Idempotente apenas se as tabelas entradas/doacoes estiverem
 -- vazias (reexecutar duplicaria os dados).
 -- =========================================================
 
 USE sigis;
+
+-- ---------------------------------------------------------
+-- Instituicoes ficticias, usadas apenas pelas doacoes e
+-- evidencias de exemplo abaixo (nao sao instituicoes reais).
+-- ---------------------------------------------------------
+INSERT INTO instituicoes (nome, cnpj, bairro, responsavel, tipo, acolhimento) VALUES
+('Abrigo Casa Feliz', '12.345.678/0001-90', 'Boa Vista', 'Maria Andrade', 'Casa de acolhimento', 1),
+('Lar dos Idosos São José', '23.456.789/0001-11', 'Centro', 'João Pereira', 'ILPI', 0),
+('Creche Pequenos Passos', '34.567.890/0001-22', 'Aventureiro', 'Ana Souza', 'Educação Infantil', 0),
+('Biblioteca Comunitária Vila Nova', '45.678.901/0001-33', 'Vila Nova', 'Carlos Lima', 'Biblioteca', 0);
+
+SET @i0 = LAST_INSERT_ID();
+
+INSERT INTO evidencias (instituicao_id, arquivo, data_evidencia) VALUES
+(@i0+0, 'evidencia-0148.jpg', '2026-08-02'),
+(@i0+2, 'evidencia-0147.jpg', '2026-07-28'),
+(@i0+1, 'evidencia-0146.jpg', '2026-07-20'),
+(@i0+3, 'evidencia-0145.jpg', '2026-07-15');
 
 -- ---------------------------------------------------------
 -- Entradas de teste: estoque inicial para todos os itens
@@ -31,14 +52,14 @@ SET e.saldo = e.saldo + x.qtd;
 -- IDs nao sao fixos (auto_increment pode ja estar avancado), entao
 -- capturamos o primeiro id gerado com LAST_INSERT_ID() e usamos offsets.
 INSERT INTO doacoes (instituicao_id, projeto_id, data_doacao, vidas_impactadas, criado_por) VALUES
-(1, 1, '2026-08-15', 49.0, 1),
-(1, 9, '2026-08-28', 160.0, 1),
-(2, 10, '2026-09-05', 183.0, 1),
-(2, 11, '2026-09-12', 120.0, 1),
-(3, 6, '2026-09-20', 42.0, 1),
-(3, 12, '2026-09-28', 55.0, 1),
-(4, 12, '2026-10-05', 85.0, 1),
-(4, 8, '2026-10-12', 22.0, 1);
+(@i0+0, 1, '2026-08-15', 49.0, 1),
+(@i0+0, 9, '2026-08-28', 160.0, 1),
+(@i0+1, 10, '2026-09-05', 183.0, 1),
+(@i0+1, 11, '2026-09-12', 120.0, 1),
+(@i0+2, 6, '2026-09-20', 42.0, 1),
+(@i0+2, 12, '2026-09-28', 55.0, 1),
+(@i0+3, 12, '2026-10-05', 85.0, 1),
+(@i0+3, 8, '2026-10-12', 22.0, 1);
 
 SET @d0 = LAST_INSERT_ID();
 

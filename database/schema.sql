@@ -25,6 +25,16 @@ CREATE TABLE usuarios (
 INSERT INTO usuarios (nome, email, senha_hash, perfil) VALUES
 ('Administrador GERSC', 'admin@gersc.org.br', '$2b$10$7rUgaHesmfHwsVdCbHc28.IsPv2BCkcco4N7koVrWhuE8ZbjFEiRe', 'Administrador');
 
+-- Tentativas de login, para bloqueio temporario apos falhas seguidas (RNF002).
+CREATE TABLE login_tentativas (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(150) NOT NULL,
+  ip VARCHAR(45) NOT NULL,
+  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_login_tentativas_email (email),
+  INDEX idx_login_tentativas_ip (ip)
+) ENGINE=InnoDB;
+
 -- ---------------------------------------------------------
 -- Grupos de impacto (taxonomia por tipo de material/produto)
 -- ---------------------------------------------------------
@@ -196,11 +206,8 @@ CREATE TABLE instituicoes (
   acolhimento TINYINT(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB;
 
-INSERT INTO instituicoes (id, nome, cnpj, bairro, responsavel, tipo, acolhimento) VALUES
-(1, 'Abrigo Casa Feliz', '12.345.678/0001-90', 'Boa Vista', 'Maria Andrade', 'Casa de acolhimento', 1),
-(2, 'Lar dos Idosos São José', '23.456.789/0001-11', 'Centro', 'João Pereira', 'ILPI', 0),
-(3, 'Creche Pequenos Passos', '34.567.890/0001-22', 'Aventureiro', 'Ana Souza', 'Educação Infantil', 0),
-(4, 'Biblioteca Comunitária Vila Nova', '45.678.901/0001-33', 'Vila Nova', 'Carlos Lima', 'Biblioteca', 0);
+-- Instituicoes reais: importar de database/import_instituicoes_nn_2026.sql
+-- (instituicoes ficticias para teste ficam em database/seed_dados_teste.sql).
 
 -- ---------------------------------------------------------
 -- Estoque (um saldo por item)
@@ -300,8 +307,5 @@ CREATE TABLE evidencias (
   FOREIGN KEY (instituicao_id) REFERENCES instituicoes(id)
 ) ENGINE=InnoDB;
 
-INSERT INTO evidencias (instituicao_id, arquivo, data_evidencia) VALUES
-(1, 'evidencia-0148.jpg', '2026-08-02'),
-(3, 'evidencia-0147.jpg', '2026-07-28'),
-(2, 'evidencia-0146.jpg', '2026-07-20'),
-(4, 'evidencia-0145.jpg', '2026-07-15');
+-- Evidencias de exemplo ficam em database/seed_dados_teste.sql (os arquivos
+-- fictícios evidencia-014x.jpg nunca existiram em uploads/evidencias/).

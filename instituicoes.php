@@ -41,6 +41,7 @@ require __DIR__ . '/includes/layout_top.php';
                   <i class="bi bi-pencil"></i>
                 </button>
                 <form method="post" action="instituicoes_excluir.php" class="d-inline" onsubmit="return confirm('Excluir a instituição \'<?php echo e($i['nome']); ?>\'? Esta ação não pode ser desfeita.');">
+                  <?php csrf_field(); ?>
                   <input type="hidden" name="id" value="<?php echo $i['id']; ?>">
                   <button type="submit" class="btn btn-sm btn-icon-delete" title="Excluir instituição">
                     <i class="bi bi-trash"></i>
@@ -61,6 +62,7 @@ require __DIR__ . '/includes/layout_top.php';
 <div class="modal fade" id="modalInstituicao" tabindex="-1">
   <div class="modal-dialog">
     <form class="modal-content" method="post" action="instituicoes_salvar.php">
+      <?php csrf_field(); ?>
       <div class="modal-header">
         <h5 class="modal-title">Nova Instituição</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -111,6 +113,7 @@ require __DIR__ . '/includes/layout_top.php';
   <div class="modal fade" id="modalEditInstituicao<?php echo $i['id']; ?>" tabindex="-1">
     <div class="modal-dialog">
       <form class="modal-content" method="post" action="instituicoes_editar.php">
+        <?php csrf_field(); ?>
         <input type="hidden" name="id" value="<?php echo $i['id']; ?>">
         <div class="modal-header">
           <h5 class="modal-title">Editar Instituição</h5>

@@ -49,12 +49,22 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 header('Content-Type: text/csv; charset=utf-8');
 header('Content-Disposition: attachment; filename="' . $def['arquivo'] . '"');
 
+// Evita injecao de formulas: um valor cadastrado como "=1+1" nao pode ser
+// interpretado como formula ao abrir o CSV no Excel/Sheets.
+function csv_valor_seguro($valor) {
+    $valor = (string)$valor;
+    if ($valor !== '' && strpbrk($valor[0], "=+-@\t\r") !== false) {
+        return "'" . $valor;
+    }
+    return $valor;
+}
+
 $out = fopen('php://output', 'w');
 fputs($out, "\xEF\xBB\xBF"); // BOM para abrir corretamente no Excel
 if (count($rows)) {
     fputcsv($out, array_keys($rows[0]), ';');
     foreach ($rows as $row) {
-        fputcsv($out, $row, ';');
+        fputcsv($out, array_map('csv_valor_seguro', $row), ';');
     }
 } else {
     fputcsv($out, array('Sem dados para este relatório'), ';');

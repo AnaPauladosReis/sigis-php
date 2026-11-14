@@ -5,6 +5,7 @@ require_login();
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('instituicoes.php');
 }
+csrf_check();
 
 $id = (int)$_POST['id'];
 $nome = trim($_POST['nome']);

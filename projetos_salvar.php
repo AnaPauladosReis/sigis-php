@@ -5,6 +5,7 @@ require_login();
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('projetos.php');
 }
+csrf_check();
 
 $nome = trim($_POST['nome']);
 $descricao = trim($_POST['descricao']);
