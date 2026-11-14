@@ -233,16 +233,26 @@ SELECT id, 0, 0 FROM itens;
 -- ---------------------------------------------------------
 -- Entradas de materiais
 -- ---------------------------------------------------------
+-- Origens das entradas (de onde o material veio), com categoria fixa.
+CREATE TABLE origens (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(150) NOT NULL,
+  categoria VARCHAR(30) NOT NULL,
+  ativo TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB;
+
 CREATE TABLE entradas (
   id INT AUTO_INCREMENT PRIMARY KEY,
   data_entrada DATE NOT NULL,
   origem VARCHAR(150),
+  origem_id INT NULL,
   projeto_id INT,
   item_id INT NOT NULL,
   quantidade DECIMAL(12,3) NOT NULL,
   peso DECIMAL(12,3),
   criado_por INT NULL,
   criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (origem_id) REFERENCES origens(id),
   FOREIGN KEY (projeto_id) REFERENCES projetos(id),
   FOREIGN KEY (item_id) REFERENCES itens(id),
   FOREIGN KEY (criado_por) REFERENCES usuarios(id)
