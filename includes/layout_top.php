@@ -19,6 +19,8 @@ $screenTitles = array(
     'doacoes_historico' => 'Histórico de Doações',
     'termo' => 'Termo de Doação',
     'evidencias' => 'Evidências & Relatórios',
+    'usuarios' => 'Usuários',
+    'perfil' => 'Meu Perfil',
 );
 if (empty($pageTitle)) {
     $pageTitle = isset($screenTitles[$active]) ? $screenTitles[$active] : 'SIGIS';
@@ -45,6 +47,11 @@ $navConfig = array(
         array('id' => 'evidencias', 'label' => 'Evidências & Relatórios'),
     )),
 );
+if (($u['perfil'] ?? null) === 'Administrador') {
+    $navConfig[] = array('label' => 'Administração', 'items' => array(
+        array('id' => 'usuarios', 'label' => 'Usuários'),
+    ));
+}
 
 $flash = flash_get();
 ?>
@@ -82,6 +89,8 @@ $flash = flash_get();
       <div class="sigis-avatar">AD</div>
       <div style="min-width:0">
         <div class="text-white small fw-semibold text-truncate"><?php echo e($u['nome']); ?></div>
+        <a href="perfil.php" class="small" style="color:#8FA8D6">Meu perfil</a>
+        <span class="small" style="color:#8FA8D6"> · </span>
         <form method="post" action="logout.php" class="d-inline">
           <?php csrf_field(); ?>
           <button type="submit" class="btn btn-link small p-0 border-0 align-baseline" style="color:#8FA8D6">Sair</button>

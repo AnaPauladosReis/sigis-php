@@ -28,11 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute(array($email));
         $user = $stmt->fetch();
 
-        if ($user && password_verify($senha, $user['senha_hash'])) {
+        if ($user && password_verify($senha, $user['senha_hash']) && (int)$user['ativo'] === 1) {
             session_regenerate_id(true);
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_nome'] = $user['nome'];
             $_SESSION['user_perfil'] = $user['perfil'];
+            $_SESSION['user_trocar_senha'] = (bool)$user['trocar_senha'];
             redirect('dashboard.php');
         } else {
             $pdo->prepare('INSERT INTO login_tentativas (email, ip) VALUES (?, ?)')->execute(array($email, $ip));
