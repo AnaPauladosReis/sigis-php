@@ -230,7 +230,7 @@ Migration: `ativo TINYINT(1) NOT NULL DEFAULT 1` em `grupos_impacto`, `itens`, `
 `projetos.php` ganha botão editar (modal igual ao de itens) e ativar/inativar; `projetos_salvar.php` passa a tratar `id` (update) além do insert.
 **Aceite:** projeto inativado não aparece em Entradas/Produção, mas continua nos relatórios.
 
-### [ ] 4.3 Grupos de impacto pela tela (RF004)
+### [x] 4.3 Grupos de impacto pela tela (RF004)
 Hoje grupos só são criados via SQL. Criar novo grupo (nome + cor), editar e inativar em `grupos.php` + `grupos_salvar.php`. Inativar grupo com itens ativos → pedir confirmação ou bloquear.
 **Aceite:** criar o grupo "Calçados", adicionar um item nele e usá-lo numa entrada.
 
