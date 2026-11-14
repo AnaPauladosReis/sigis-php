@@ -15,6 +15,7 @@ $bairro = trim($_POST['bairro']);
 $responsavel = trim($_POST['responsavel']);
 $tipo = trim($_POST['tipo']);
 $acolhimento = !empty($_POST['acolhimento']) ? 1 : 0;
+$ativo = !empty($_POST['ativo']) ? 1 : 0;
 
 if ($nome === '' || $cnpj === '') {
     flash_set('Informe ao menos nome e CNPJ.', 'danger');
@@ -26,8 +27,8 @@ if (!validar_cnpj($cnpj)) {
 }
 
 try {
-    $stmt = $pdo->prepare('UPDATE instituicoes SET nome = ?, razao_social = ?, cnpj = ?, bairro = ?, responsavel = ?, tipo = ?, acolhimento = ? WHERE id = ?');
-    $stmt->execute(array($nome, $razao_social, $cnpj, $bairro, $responsavel, $tipo, $acolhimento, $id));
+    $stmt = $pdo->prepare('UPDATE instituicoes SET nome = ?, razao_social = ?, cnpj = ?, bairro = ?, responsavel = ?, tipo = ?, acolhimento = ?, ativo = ? WHERE id = ?');
+    $stmt->execute(array($nome, $razao_social, $cnpj, $bairro, $responsavel, $tipo, $acolhimento, $ativo, $id));
     flash_set('Instituição "' . $nome . '" atualizada com sucesso.');
 } catch (PDOException $e) {
     if ($e->getCode() === '23000') {
