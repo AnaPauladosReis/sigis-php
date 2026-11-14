@@ -43,7 +43,8 @@ CREATE TABLE login_tentativas (
 CREATE TABLE grupos_impacto (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
-  cor VARCHAR(7) NOT NULL DEFAULT '#2B5FAD'
+  cor VARCHAR(7) NOT NULL DEFAULT '#2B5FAD',
+  ativo TINYINT(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB;
 
 INSERT INTO grupos_impacto (id, nome, cor) VALUES
@@ -97,6 +98,7 @@ CREATE TABLE itens (
   unidade VARCHAR(20) NOT NULL,
   peso_unitario DECIMAL(10,3) NOT NULL DEFAULT 0,
   multiplicador DECIMAL(10,3) NOT NULL DEFAULT 0,
+  ativo TINYINT(1) NOT NULL DEFAULT 1,
   FOREIGN KEY (grupo_id) REFERENCES grupos_impacto(id),
   FOREIGN KEY (projeto_id) REFERENCES projetos(id)
 ) ENGINE=InnoDB;
@@ -205,7 +207,8 @@ CREATE TABLE instituicoes (
   bairro VARCHAR(100),
   responsavel VARCHAR(150),
   tipo VARCHAR(100),
-  acolhimento TINYINT(1) NOT NULL DEFAULT 0
+  acolhimento TINYINT(1) NOT NULL DEFAULT 0,
+  ativo TINYINT(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB;
 
 -- Instituicoes reais: importar de database/import_instituicoes_nn_2026.sql
