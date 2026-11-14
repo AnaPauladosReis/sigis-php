@@ -128,7 +128,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 **Aceite:** com o banco parado, a tela mostra mensagem genérica e o detalhe aparece só em `docker compose logs app`.
 
-### [ ] 1.6 Neutralizar injeção de fórmulas no CSV
+### [x] 1.6 Neutralizar injeção de fórmulas no CSV
 **Arquivo:** `relatorios_exportar.php`.
 **Passos:** antes do `fputcsv`, prefixar com `'` todo valor que comece com `=`, `+`, `-`, `@`, tab ou CR. Gravar o BOM UTF-8 no início para o Excel abrir acentos corretamente.
 **Aceite:** uma origem cadastrada como `=1+1` aparece literalmente no Excel.
