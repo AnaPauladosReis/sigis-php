@@ -30,8 +30,8 @@ if (!existe_id($pdo, 'itens', $itemId)) {
     flash_set('Item inválido.', 'danger');
     redirect('entradas.php');
 }
-if ($projetoId !== null && !existe_id($pdo, 'projetos', $projetoId)) {
-    flash_set('Projeto inválido.', 'danger');
+if ($projetoId === null || !existe_id($pdo, 'projetos', $projetoId)) {
+    flash_set('Selecione um projeto.', 'danger');
     redirect('entradas.php');
 }
 

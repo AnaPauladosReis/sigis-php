@@ -74,8 +74,8 @@ require __DIR__ . '/includes/layout_top.php';
         </div>
         <div class="mb-3">
           <label class="form-label small fw-semibold">Projeto</label>
-          <select name="projeto_id" class="form-select">
-            <option value="">— Sem projeto —</option>
+          <select name="projeto_id" id="entradaProjetoSelect" class="form-select" required>
+            <option value="">— Selecione —</option>
             <?php foreach ($projetos as $p) { ?>
               <option value="<?php echo $p['id']; ?>"><?php echo e($p['nome']); ?></option>
             <?php } ?>
@@ -88,7 +88,7 @@ require __DIR__ . '/includes/layout_top.php';
               <?php foreach ($itens as $it) {
                   $stepItem = in_array($it['unidade'], array('un', 'par')) ? '1' : '0.1';
               ?>
-                <option value="<?php echo $it['id']; ?>" data-step="<?php echo $stepItem; ?>"><?php echo e($it['nome']); ?> (<?php echo e($it['unidade']); ?>)</option>
+                <option value="<?php echo $it['id']; ?>" data-step="<?php echo $stepItem; ?>" data-projeto="<?php echo $it['projeto_id'] ?: ''; ?>"><?php echo e($it['nome']); ?> (<?php echo e($it['unidade']); ?>)</option>
               <?php } ?>
             </select>
           </div>
@@ -113,9 +113,13 @@ require __DIR__ . '/includes/layout_top.php';
   (function () {
     var select = document.getElementById('entradaItemSelect');
     var quantidade = document.getElementById('entradaQuantidade');
+    var projeto = document.getElementById('entradaProjetoSelect');
     function atualizarStep() {
       var opt = select.options[select.selectedIndex];
       quantidade.step = (opt && opt.dataset.step) ? opt.dataset.step : '1';
+      if (opt && opt.dataset.projeto) {
+        projeto.value = opt.dataset.projeto;
+      }
     }
     select.addEventListener('change', atualizarStep);
     atualizarStep();
