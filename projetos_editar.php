@@ -17,6 +17,10 @@ if ($nome === '') {
     flash_set('Informe o nome do projeto.', 'danger');
     redirect('projetos.php');
 }
+if (!in_array($status, array('Ativo', 'Inativo', 'Encerrado'), true)) {
+    flash_set('Status inválido.', 'danger');
+    redirect('projetos.php');
+}
 if ($grupoId !== null && !existe_id($pdo, 'grupos_impacto', $grupoId)) {
     flash_set('Grupo de impacto inválido.', 'danger');
     redirect('projetos.php');

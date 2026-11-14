@@ -41,8 +41,14 @@ require __DIR__ . '/includes/layout_top.php';
 
 <div class="row g-3">
   <?php foreach ($projetos as $p) {
-      $badgeBg = $p['status'] === 'Encerrado' ? '#F3E7E7' : '#E8F5EC';
-      $badgeColor = $p['status'] === 'Encerrado' ? '#9B2C2C' : '#2E8B57';
+      $badgesPorStatus = array(
+          'Ativo' => array('bg' => '#E8F5EC', 'cor' => '#2E8B57'),
+          'Inativo' => array('bg' => '#EEF0F3', 'cor' => '#98A2B3'),
+          'Encerrado' => array('bg' => '#F3E7E7', 'cor' => '#9B2C2C'),
+      );
+      $badge = $badgesPorStatus[$p['status']] ?? $badgesPorStatus['Ativo'];
+      $badgeBg = $badge['bg'];
+      $badgeColor = $badge['cor'];
   ?>
     <div class="col-md-6">
       <div class="card p-3 h-100">
@@ -144,6 +150,7 @@ require __DIR__ . '/includes/layout_top.php';
               <label class="form-label small fw-semibold">Status</label>
               <select name="status" class="form-select">
                 <option value="Ativo" <?php echo $p['status'] === 'Ativo' ? 'selected' : ''; ?>>Ativo</option>
+                <option value="Inativo" <?php echo $p['status'] === 'Inativo' ? 'selected' : ''; ?>>Inativo</option>
                 <option value="Encerrado" <?php echo $p['status'] === 'Encerrado' ? 'selected' : ''; ?>>Encerrado</option>
               </select>
             </div>
