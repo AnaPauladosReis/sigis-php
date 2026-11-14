@@ -61,8 +61,12 @@ Pré-requisitos: [Docker](https://docs.docker.com/get-docker/) e o plugin Docker
 |---|---|---|
 | `DB_NAME` | Nome do banco de dados | `sigis` |
 | `DB_USER` | Usuário do MySQL usado pela aplicação | `sigis` |
-| `DB_PASS` | Senha desse usuário | `sigis` |
-| `DB_ROOT_PASS` | Senha do usuário `root` do MySQL | `root` |
+| `DB_PASS` | Senha desse usuário | **obrigatória**, sem padrão |
+| `DB_ROOT_PASS` | Senha do usuário `root` do MySQL | **obrigatória**, sem padrão |
+
+`DB_PASS` e `DB_ROOT_PASS` não têm mais valor padrão: sem um `.env` preenchido, `docker compose up` falha com uma mensagem pedindo para defini-las. Edite os valores de exemplo do `.env.example` antes de rodar.
+
+O MySQL não expõe mais a porta `3306` no host — a aplicação acessa o banco pela rede interna do Docker. Se precisar acessar de fora (ex.: um cliente MySQL local), crie um `docker-compose.override.yml` (não versionado) só com essa porta.
 
 Os uploads de evidências ficam persistidos em `./uploads`, montado como volume no container `app` — arquivos enviados sobrevivem a rebuilds.
 

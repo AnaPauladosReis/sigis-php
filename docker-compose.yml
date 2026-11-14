@@ -8,7 +8,7 @@ services:
       DB_HOST: db
       DB_NAME: ${DB_NAME:-sigis}
       DB_USER: ${DB_USER:-sigis}
-      DB_PASS: ${DB_PASS:-sigis}
+      DB_PASS: ${DB_PASS:?defina DB_PASS no .env}
     volumes:
       - ./uploads:/var/www/html/uploads
     depends_on:
@@ -19,18 +19,16 @@ services:
     image: mysql:8.0
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS:-root}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS:?defina DB_ROOT_PASS no .env}
       MYSQL_DATABASE: ${DB_NAME:-sigis}
       MYSQL_USER: ${DB_USER:-sigis}
-      MYSQL_PASSWORD: ${DB_PASS:-sigis}
+      MYSQL_PASSWORD: ${DB_PASS:?defina DB_PASS no .env}
     volumes:
       - db_data:/var/lib/mysql
       - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
       - ./database/mysql-charset.cnf:/etc/mysql/conf.d/charset.cnf
-    ports:
-      - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASS:-root}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASS}"]
       interval: 5s
       timeout: 5s
       retries: 10
