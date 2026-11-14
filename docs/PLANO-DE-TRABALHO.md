@@ -90,7 +90,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 **Aceite:** `curl -I localhost:8080/database/schema.sql` → 403/404; `curl -I localhost:8080/includes/functions.php` → 403; um `.php` colocado à mão em `uploads/evidencias/` não executa.
 
-### [ ] 1.2 Corrigir o upload de evidências
+### [x] 1.2 Corrigir o upload de evidências
 **Problema:** `evidencias_salvar.php` valida o MIME real, mas monta a extensão a partir do **nome enviado** (`pathinfo($_FILES['arquivo']['name'])`). Um GIF válido chamado `x.php` é gravado como `.php` — junto com 1.1, isso é execução remota de código.
 **Passos:**
 - Derivar a extensão do MIME validado: `image/jpeg→jpg`, `image/png→png`, `image/webp→webp`, `image/gif→gif`.
