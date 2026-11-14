@@ -164,7 +164,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 **Aceite:** simular duas doações simultâneas do último saldo (dois navegadores) → uma é recusada e o saldo nunca fica negativo.
 
-### [ ] 2.2 Validação de dados no servidor
+### [x] 2.2 Validação de dados no servidor
 **Passos:** criar helpers (`validar_data()`, `validar_numero_positivo()`, `validar_cnpj()` com dígitos verificadores, `existe_id($pdo, $tabela, $id)`) e aplicar em todos os `*_salvar.php`:
 - datas válidas e não futuras;
 - quantidades > 0;
