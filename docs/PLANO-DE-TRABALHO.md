@@ -141,7 +141,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 **Aceite:** `docker compose up` sem `.env` falha com mensagem clara; `nc -z localhost 3306` falha.
 
-### [ ] 1.8 Instalação do zero com os dados reais
+### [x] 1.8 Instalação do zero com os dados reais
 **Problema:** o `docker-compose.yml` só monta `database/schema.sql` em `/docker-entrypoint-initdb.d`. As **37 instituições reais** (`import_instituicoes_nn_2026.sql`) não são carregadas, e o `schema.sql` traz 4 instituições e 4 evidências de exemplo (os arquivos dessas evidências não existem).
 **Passos:**
 - Montar os scripts em ordem: `01_schema.sql`, `02_instituicoes.sql` e, opcionalmente, `03_seed_dados_teste.sql` (só se `SEED_TESTE=1`).
