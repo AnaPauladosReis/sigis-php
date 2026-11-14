@@ -238,7 +238,7 @@ Hoje grupos só são criados via SQL. Criar novo grupo (nome + cor), editar e in
 Botão ativar/inativar no modal de edição. Itens inativos saem de Entradas, Produção e do passo 2 de Doações.
 **Aceite:** item inativo não aparece no wizard de doação; termos antigos com ele continuam abrindo.
 
-### [ ] 4.5 Instituições: editar, inativar e histórico (RF006, RF007)
+### [x] 4.5 Instituições: editar, inativar e histórico (RF006, RF007)
 - Botão editar no cadastro (mesmos campos do modal atual) e ativar/inativar.
 - Nova tela `instituicao.php?id=` com dados, lista de doações recebidas (data, termo, itens, vidas) e evidências.
 - Instituição inativa não aparece no passo 1 de Doações.
