@@ -259,7 +259,7 @@ Botão ativar/inativar no modal de edição. Itens inativos saem de Entradas, Pr
 Hoje o projeto da entrada é opcional (`<select name="projeto_id">` sem `required`). Tornar obrigatório no formulário e no servidor; pré-selecionar o projeto padrão do item (`itens.projeto_id`).
 **Aceite:** POST sem `projeto_id` é recusado.
 
-### [ ] 4.8 Estoque mínimo editável (opcional — "controle de estoque mínimo" está nas propostas futuras do documento)
+### [x] 4.8 Estoque mínimo editável (opcional — "controle de estoque mínimo" está nas propostas futuras do documento)
 A coluna `estoque.minimo` existe e `estoque.php` já usa para "baixo", mas não há como editar. Adicionar edição do mínimo por item (Administrador) e destacar itens abaixo do mínimo no dashboard.
 **Aceite:** definir mínimo 10 num item com saldo 5 → aparece como baixo.
 
