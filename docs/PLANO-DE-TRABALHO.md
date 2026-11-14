@@ -234,7 +234,7 @@ Migration: `ativo TINYINT(1) NOT NULL DEFAULT 1` em `grupos_impacto`, `itens`, `
 Hoje grupos só são criados via SQL. Criar novo grupo (nome + cor), editar e inativar em `grupos.php` + `grupos_salvar.php`. Inativar grupo com itens ativos → pedir confirmação ou bloquear.
 **Aceite:** criar o grupo "Calçados", adicionar um item nele e usá-lo numa entrada.
 
-### [ ] 4.4 Itens: inativar (RF005)
+### [x] 4.4 Itens: inativar (RF005)
 Botão ativar/inativar no modal de edição. Itens inativos saem de Entradas, Produção e do passo 2 de Doações.
 **Aceite:** item inativo não aparece no wizard de doação; termos antigos com ele continuam abrindo.
 
