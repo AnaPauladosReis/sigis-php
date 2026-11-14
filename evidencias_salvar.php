@@ -5,6 +5,7 @@ require_login();
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('evidencias.php');
 }
+csrf_check();
 
 $instituicaoId = !empty($_POST['instituicao_id']) ? (int)$_POST['instituicao_id'] : null;
 $data = $_POST['data_evidencia'];

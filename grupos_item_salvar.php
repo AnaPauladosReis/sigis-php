@@ -5,6 +5,7 @@ require_login();
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('grupos.php');
 }
+csrf_check();
 
 $grupoId = (int)$_POST['grupo_id'];
 $nome = trim($_POST['nome']);

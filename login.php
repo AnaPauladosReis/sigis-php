@@ -12,6 +12,7 @@ $vidasImpactadas = (float)$pdo->query('SELECT COALESCE(SUM(vidas_impactadas),0) 
 $instituicoesAtendidas = (int)$pdo->query('SELECT COUNT(DISTINCT instituicao_id) FROM doacoes')->fetchColumn();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_check();
     $email = trim($_POST['email']);
     $senha = (string)$_POST['senha'];
 
@@ -68,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="alert alert-danger py-2 small"><?php echo e($erro); ?></div>
       <?php } ?>
       <form method="post" novalidate>
+        <?php csrf_field(); ?>
         <div class="mb-3">
           <label class="form-label small fw-semibold">Usuário</label>
           <input type="email" name="email" class="form-control" placeholder="admin@gersc.org.br" required value="<?php echo isset($_POST['email']) ? e($_POST['email']) : ''; ?>">

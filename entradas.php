@@ -48,6 +48,7 @@ require __DIR__ . '/includes/layout_top.php';
 <div class="modal fade" id="modalEntrada" tabindex="-1">
   <div class="modal-dialog">
     <form class="modal-content" method="post" action="entradas_salvar.php">
+      <?php csrf_field(); ?>
       <div class="modal-header">
         <h5 class="modal-title">Registrar Entrada</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

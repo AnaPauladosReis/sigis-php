@@ -54,6 +54,7 @@ require __DIR__ . '/includes/layout_top.php';
               <i class="bi bi-pencil"></i>
             </button>
             <form method="post" action="projetos_excluir.php" class="d-inline" onsubmit="return confirm('Excluir o projeto \'<?php echo e($p['nome']); ?>\'? Esta ação não pode ser desfeita.');">
+              <?php csrf_field(); ?>
               <input type="hidden" name="id" value="<?php echo $p['id']; ?>">
               <button type="submit" class="btn btn-sm btn-icon-delete" title="Excluir projeto">
                 <i class="bi bi-trash"></i>
@@ -79,6 +80,7 @@ require __DIR__ . '/includes/layout_top.php';
 <div class="modal fade" id="modalProjeto" tabindex="-1">
   <div class="modal-dialog">
     <form class="modal-content" method="post" action="projetos_salvar.php">
+      <?php csrf_field(); ?>
       <div class="modal-header">
         <h5 class="modal-title">Novo Projeto Social</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -114,6 +116,7 @@ require __DIR__ . '/includes/layout_top.php';
   <div class="modal fade" id="modalEditProjeto<?php echo $p['id']; ?>" tabindex="-1">
     <div class="modal-dialog">
       <form class="modal-content" method="post" action="projetos_editar.php">
+        <?php csrf_field(); ?>
         <input type="hidden" name="id" value="<?php echo $p['id']; ?>">
         <div class="modal-header">
           <h5 class="modal-title">Editar Projeto Social</h5>

@@ -63,6 +63,7 @@ require __DIR__ . '/includes/layout_top.php';
   <div class="modal fade" id="modalItem<?php echo $g['id']; ?>" tabindex="-1">
     <div class="modal-dialog">
       <form class="modal-content" method="post" action="grupos_item_salvar.php">
+        <?php csrf_field(); ?>
         <input type="hidden" name="grupo_id" value="<?php echo $g['id']; ?>">
         <div class="modal-header">
           <h5 class="modal-title">Novo item · <?php echo e($g['nome']); ?></h5>
@@ -109,6 +110,7 @@ require __DIR__ . '/includes/layout_top.php';
     <div class="modal fade" id="modalEditItem<?php echo $it['id']; ?>" tabindex="-1">
       <div class="modal-dialog">
         <form class="modal-content" method="post" action="grupos_item_editar.php">
+          <?php csrf_field(); ?>
           <input type="hidden" name="id" value="<?php echo $it['id']; ?>">
           <div class="modal-header">
             <h5 class="modal-title">Editar item</h5>

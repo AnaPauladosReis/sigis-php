@@ -22,6 +22,7 @@ foreach ($estoqueItens as $it) {
 $erro = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_check();
     $acao = isset($_POST['acao']) ? $_POST['acao'] : '';
 
     if ($acao === 'ir_passo2') {
@@ -175,6 +176,7 @@ require __DIR__ . '/includes/layout_top.php';
     <div class="fw-semibold mb-3" style="font-size:.9rem">Selecione a instituição beneficiada</div>
     <input type="text" id="buscaInstituicao" class="form-control mb-3" style="max-width:320px" placeholder="Buscar instituição por nome, bairro ou tipo...">
     <form method="post">
+      <?php csrf_field(); ?>
       <input type="hidden" name="acao" value="ir_passo2">
       <div class="row g-2 mb-3" id="listaInstituicoes">
         <?php foreach ($instituicoes as $i) {
@@ -242,6 +244,7 @@ require __DIR__ . '/includes/layout_top.php';
     <div class="text-muted small mb-3">Destinado a: <strong class="text-dark"><?php echo e($instituicaoSelecionada ? $instituicaoSelecionada['nome'] : '—'); ?></strong></div>
     <input type="text" id="buscaItem" class="form-control mb-3" style="max-width:320px" placeholder="Buscar item por nome...">
     <form method="post">
+      <?php csrf_field(); ?>
       <div class="accordion mb-0" id="acordeaoItens">
         <?php
         $temSelecaoAlguma = !empty($wizard['selecoes']);
@@ -383,6 +386,7 @@ require __DIR__ . '/includes/layout_top.php';
       <div class="fw-bold fs-3" style="color:var(--blue)"><?php echo fmt_num($vidasTotalPreview, 1); ?></div>
     </div>
     <form method="post" class="d-flex justify-content-between">
+      <?php csrf_field(); ?>
       <button type="submit" formnovalidate name="acao" value="voltar_passo2" class="btn btn-sigis-outline">Voltar</button>
       <button type="submit" name="acao" value="confirmar" class="btn btn-sigis-green">Confirmar e Gerar Termo de Doação</button>
     </form>

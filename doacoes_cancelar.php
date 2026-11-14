@@ -5,6 +5,7 @@ require_login();
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('doacoes_historico.php');
 }
+csrf_check();
 
 $id = (int)$_POST['id'];
 

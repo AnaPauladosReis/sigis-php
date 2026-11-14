@@ -5,6 +5,7 @@ require_login();
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('entradas.php');
 }
+csrf_check();
 
 $data = $_POST['data_entrada'];
 $origem = trim($_POST['origem']);

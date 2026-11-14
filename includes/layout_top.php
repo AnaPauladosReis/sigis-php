@@ -82,7 +82,10 @@ $flash = flash_get();
       <div class="sigis-avatar">AD</div>
       <div style="min-width:0">
         <div class="text-white small fw-semibold text-truncate"><?php echo e($u['nome']); ?></div>
-        <a href="logout.php" class="small" style="color:#8FA8D6">Sair</a>
+        <form method="post" action="logout.php" class="d-inline">
+          <?php csrf_field(); ?>
+          <button type="submit" class="btn btn-link small p-0 border-0 align-baseline" style="color:#8FA8D6">Sair</button>
+        </form>
       </div>
     </div>
   </nav>
