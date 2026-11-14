@@ -18,6 +18,18 @@ if ($nome === '' || $unidade === '') {
     flash_set('Preencha nome e unidade do item.', 'danger');
     redirect('grupos.php');
 }
+if (!existe_id($pdo, 'grupos_impacto', $grupoId)) {
+    flash_set('Grupo de impacto inválido.', 'danger');
+    redirect('grupos.php');
+}
+if ($projetoId !== null && !existe_id($pdo, 'projetos', $projetoId)) {
+    flash_set('Projeto inválido.', 'danger');
+    redirect('grupos.php');
+}
+if (!validar_numero_positivo($mult)) {
+    flash_set('Informe um multiplicador de vidas maior que zero.', 'danger');
+    redirect('grupos.php');
+}
 
 $pdo->beginTransaction();
 $stmt = $pdo->prepare('INSERT INTO itens (grupo_id, projeto_id, nome, unidade, peso_unitario, multiplicador) VALUES (?, ?, ?, ?, ?, ?)');

@@ -16,6 +16,27 @@ $qtdGerada = (float)$_POST['quantidade_gerada'];
 $unidadeGerada = trim($_POST['unidade_gerada']);
 $residuo = ($_POST['residuo_kg'] !== '') ? (float)$_POST['residuo_kg'] : 0;
 
+if (!validar_data($data)) {
+    flash_set('Informe uma data válida (não futura).', 'danger');
+    redirect('producao.php');
+}
+if (!existe_id($pdo, 'itens', $itemId)) {
+    flash_set('Item consumido inválido.', 'danger');
+    redirect('producao.php');
+}
+if (!validar_numero_positivo($qtdConsumida)) {
+    flash_set('Informe uma quantidade consumida válida.', 'danger');
+    redirect('producao.php');
+}
+if (!validar_numero_positivo($qtdGerada)) {
+    flash_set('Informe uma quantidade gerada válida.', 'danger');
+    redirect('producao.php');
+}
+if ($projetoId !== null && !existe_id($pdo, 'projetos', $projetoId)) {
+    flash_set('Projeto inválido.', 'danger');
+    redirect('producao.php');
+}
+
 $pdo->beginTransaction();
 try {
     $stmt = $pdo->prepare('INSERT INTO producoes (data_producao, projeto_id, item_consumido_id, qtd_consumida, produto_gerado, quantidade_gerada, unidade_gerada, residuo_kg, criado_por) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');

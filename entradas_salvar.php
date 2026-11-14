@@ -14,8 +14,20 @@ $itemId = (int)$_POST['item_id'];
 $quantidade = (float)$_POST['quantidade'];
 $peso = ($_POST['peso'] !== '') ? (float)$_POST['peso'] : null;
 
-if ($quantidade <= 0) {
+if (!validar_data($data)) {
+    flash_set('Informe uma data válida (não futura).', 'danger');
+    redirect('entradas.php');
+}
+if (!validar_numero_positivo($quantidade)) {
     flash_set('Informe uma quantidade válida.', 'danger');
+    redirect('entradas.php');
+}
+if (!existe_id($pdo, 'itens', $itemId)) {
+    flash_set('Item inválido.', 'danger');
+    redirect('entradas.php');
+}
+if ($projetoId !== null && !existe_id($pdo, 'projetos', $projetoId)) {
+    flash_set('Projeto inválido.', 'danger');
     redirect('entradas.php');
 }
 

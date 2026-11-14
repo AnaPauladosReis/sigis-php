@@ -10,6 +10,15 @@ csrf_check();
 $instituicaoId = !empty($_POST['instituicao_id']) ? (int)$_POST['instituicao_id'] : null;
 $data = $_POST['data_evidencia'];
 
+if (!validar_data($data)) {
+    flash_set('Informe uma data válida (não futura).', 'danger');
+    redirect('evidencias.php');
+}
+if ($instituicaoId !== null && !existe_id($pdo, 'instituicoes', $instituicaoId)) {
+    flash_set('Instituição inválida.', 'danger');
+    redirect('evidencias.php');
+}
+
 if (empty($_FILES['arquivo'])) {
     flash_set('Selecione um arquivo de imagem válido.', 'danger');
     redirect('evidencias.php');
