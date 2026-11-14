@@ -15,18 +15,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_check();
     $email = trim($_POST['email']);
     $senha = (string)$_POST['senha'];
+    $ip = $_SERVER['REMOTE_ADDR'];
 
-    $stmt = $pdo->prepare('SELECT * FROM usuarios WHERE email = ? LIMIT 1');
-    $stmt->execute(array($email));
-    $user = $stmt->fetch();
+    $stmt = $pdo->prepare('SELECT COUNT(*) FROM login_tentativas WHERE (email = ? OR ip = ?) AND criado_em >= (NOW() - INTERVAL 15 MINUTE)');
+    $stmt->execute(array($email, $ip));
+    $falhasRecentes = (int)$stmt->fetchColumn();
 
-    if ($user && password_verify($senha, $user['senha_hash'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_nome'] = $user['nome'];
-        $_SESSION['user_perfil'] = $user['perfil'];
-        redirect('dashboard.php');
+    if ($falhasRecentes >= 5) {
+        $erro = 'Muitas tentativas de login. Tente novamente em alguns minutos.';
     } else {
-        $erro = 'Usuário ou senha inválidos.';
+        $stmt = $pdo->prepare('SELECT * FROM usuarios WHERE email = ? LIMIT 1');
+        $stmt->execute(array($email));
+        $user = $stmt->fetch();
+
+        if ($user && password_verify($senha, $user['senha_hash'])) {
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_nome'] = $user['nome'];
+            $_SESSION['user_perfil'] = $user['perfil'];
+            redirect('dashboard.php');
+        } else {
+            $pdo->prepare('INSERT INTO login_tentativas (email, ip) VALUES (?, ?)')->execute(array($email, $ip));
+            $erro = 'Usuário ou senha inválidos.';
+        }
     }
 }
 ?>
