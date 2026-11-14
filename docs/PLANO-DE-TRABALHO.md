@@ -255,7 +255,7 @@ Botão ativar/inativar no modal de edição. Itens inativos saem de Entradas, Pr
 
 **Aceite:** não é possível registrar entrada sem origem cadastrada; o relatório de entradas mostra origem e categoria.
 
-### [ ] 4.7 Entrada sempre vinculada a projeto (RN013)
+### [x] 4.7 Entrada sempre vinculada a projeto (RN013)
 Hoje o projeto da entrada é opcional (`<select name="projeto_id">` sem `required`). Tornar obrigatório no formulário e no servidor; pré-selecionar o projeto padrão do item (`itens.projeto_id`).
 **Aceite:** POST sem `projeto_id` é recusado.
 
