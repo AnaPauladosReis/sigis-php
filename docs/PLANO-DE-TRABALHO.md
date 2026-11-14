@@ -155,7 +155,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 ## Fase 2 — Regras de estoque e validações (P0)
 
-### [ ] 2.1 Função única para movimentar estoque
+### [x] 2.1 Função única para movimentar estoque
 **Problema:** a validação de saldo em `producao_salvar.php` e `doacoes.php` acontece **antes** do `beginTransaction()` e o `UPDATE estoque SET saldo = saldo - ?` não confere o saldo — dois usuários ao mesmo tempo podem deixar o estoque negativo (RN015). `entradas_salvar.php` e `producao_salvar.php` também não fazem `rollBack()` se algo falhar.
 **Passos:**
 - Criar `includes/estoque.php` (incluído pelo `bootstrap.php`) com `estoque_movimentar(PDO $pdo, int $itemId, float $delta, string $tipo, ?string $refTipo, ?int $refId): void`. Para saída: `UPDATE estoque SET saldo = saldo + ? WHERE item_id = ? AND saldo + ? >= 0` e lançar exceção se `rowCount() === 0`.
@@ -164,7 +164,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 **Aceite:** simular duas doações simultâneas do último saldo (dois navegadores) → uma é recusada e o saldo nunca fica negativo.
 
-### [ ] 2.2 Validação de dados no servidor
+### [x] 2.2 Validação de dados no servidor
 **Passos:** criar helpers (`validar_data()`, `validar_numero_positivo()`, `validar_cnpj()` com dígitos verificadores, `existe_id($pdo, $tabela, $id)`) e aplicar em todos os `*_salvar.php`:
 - datas válidas e não futuras;
 - quantidades > 0;
@@ -173,7 +173,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 **Aceite:** enviar formulários manipulados (ID inexistente, quantidade negativa, data `2026-13-40`) gera mensagem de erro, nunca erro do PHP.
 
-### [ ] 2.3 Unidade correta na produção social
+### [x] 2.3 Unidade correta na produção social
 **Problema:** `producao.php` rotula a quantidade consumida como "kg" e `producao_salvar.php` diz "disponível: X kg", mas os itens têm unidades `un`, `par`, `L`, `kg`.
 **Passos:** mostrar a unidade real do item no formulário (ao trocar o item) e nas mensagens/listagens.
 **Aceite:** consumir "Toalhas de Mesa" mostra "un".

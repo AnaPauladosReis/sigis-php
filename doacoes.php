@@ -84,10 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $doacaoId = (int)$pdo->lastInsertId();
 
                     $stmtItem = $pdo->prepare('INSERT INTO doacao_itens (doacao_id, item_id, quantidade) VALUES (?, ?, ?)');
-                    $stmtSaldo = $pdo->prepare('UPDATE estoque SET saldo = saldo - ? WHERE item_id = ?');
                     foreach ($wizard['selecoes'] as $itemId => $qtd) {
                         $stmtItem->execute(array($doacaoId, $itemId, $qtd));
-                        $stmtSaldo->execute(array($qtd, $itemId));
+                        estoque_movimentar($pdo, (int)$itemId, -$qtd, 'doacao', 'doacao', $doacaoId);
                     }
 
                     // gera o numero sequencial do termo no padrao oficial "NNN/AAAA" (sequencia reinicia a cada ano)
@@ -106,6 +105,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $termoId = (int)$pdo->lastInsertId();
 
                     $pdo->commit();
+                } catch (RuntimeException $ex) {
+                    $pdo->rollBack();
+                    $erro = 'Saldo insuficiente para um dos itens selecionados. Revise as quantidades.';
                 } catch (Exception $ex) {
                     $pdo->rollBack();
                     error_log($ex->getMessage());

@@ -19,9 +19,21 @@ if ($nome === '' || $cnpj === '') {
     flash_set('Informe ao menos nome e CNPJ.', 'danger');
     redirect('instituicoes.php');
 }
+if (!validar_cnpj($cnpj)) {
+    flash_set('CNPJ inválido. Confira o número informado.', 'danger');
+    redirect('instituicoes.php');
+}
 
-$stmt = $pdo->prepare('INSERT INTO instituicoes (nome, razao_social, cnpj, bairro, responsavel, tipo, acolhimento) VALUES (?, ?, ?, ?, ?, ?, ?)');
-$stmt->execute(array($nome, $razao_social, $cnpj, $bairro, $responsavel, $tipo, $acolhimento));
+try {
+    $stmt = $pdo->prepare('INSERT INTO instituicoes (nome, razao_social, cnpj, bairro, responsavel, tipo, acolhimento) VALUES (?, ?, ?, ?, ?, ?, ?)');
+    $stmt->execute(array($nome, $razao_social, $cnpj, $bairro, $responsavel, $tipo, $acolhimento));
+    flash_set('Instituição "' . $nome . '" cadastrada com sucesso.');
+} catch (PDOException $e) {
+    if ($e->getCode() === '23000') {
+        flash_set('Já existe uma instituição cadastrada com esse CNPJ.', 'danger');
+    } else {
+        throw $e;
+    }
+}
 
-flash_set('Instituição "' . $nome . '" cadastrada com sucesso.');
 redirect('instituicoes.php');

@@ -15,6 +15,10 @@ if ($nome === '') {
     flash_set('Informe o nome do projeto.', 'danger');
     redirect('projetos.php');
 }
+if ($grupoId !== null && !existe_id($pdo, 'grupos_impacto', $grupoId)) {
+    flash_set('Grupo de impacto inválido.', 'danger');
+    redirect('projetos.php');
+}
 
 $stmt = $pdo->prepare('INSERT INTO projetos (nome, descricao, grupo_id, status) VALUES (?, ?, ?, ?)');
 $stmt->execute(array($nome, $descricao !== '' ? $descricao : 'Sem descrição.', $grupoId, 'Ativo'));

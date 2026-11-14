@@ -82,6 +82,55 @@ function csrf_field() {
     echo '<input type="hidden" name="csrf" value="' . e(csrf_token()) . '">';
 }
 
+/** Valida data no formato Y-m-d (data real de calendario); por padrao rejeita datas futuras. */
+function validar_data($data, $permitirFutura = false) {
+    $dt = DateTime::createFromFormat('Y-m-d', (string)$data);
+    if (!$dt || $dt->format('Y-m-d') !== $data) {
+        return false;
+    }
+    if (!$permitirFutura && $dt->format('Y-m-d') > date('Y-m-d')) {
+        return false;
+    }
+    return true;
+}
+
+function validar_numero_positivo($valor) {
+    return is_numeric($valor) && (float)$valor > 0;
+}
+
+/** Valida CNPJ pelo formato (14 digitos, nao repetidos) e pelos digitos verificadores. */
+function validar_cnpj($cnpj) {
+    $cnpj = preg_replace('/\D/', '', (string)$cnpj);
+    if (strlen($cnpj) !== 14 || preg_match('/^(\d)\1{13}$/', $cnpj)) {
+        return false;
+    }
+    $calcularDv = function ($base, $pesos) {
+        $soma = 0;
+        foreach ($pesos as $i => $peso) {
+            $soma += (int)$base[$i] * $peso;
+        }
+        $resto = $soma % 11;
+        return $resto < 2 ? 0 : 11 - $resto;
+    };
+    $dv1 = $calcularDv($cnpj, array(5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2));
+    $dv2 = $calcularDv($cnpj . $dv1, array(6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2));
+    return $cnpj === substr($cnpj, 0, 12) . $dv1 . $dv2;
+}
+
+/** Confere se existe um registro com esse id numa tabela da lista permitida (evita SQL injection no nome da tabela). */
+function existe_id(PDO $pdo, $tabela, $id) {
+    $tabelasPermitidas = array('itens', 'projetos', 'instituicoes', 'grupos_impacto');
+    if (!in_array($tabela, $tabelasPermitidas, true)) {
+        throw new InvalidArgumentException('Tabela não permitida em existe_id(): ' . $tabela);
+    }
+    if (!is_numeric($id)) {
+        return false;
+    }
+    $stmt = $pdo->prepare("SELECT 1 FROM `{$tabela}` WHERE id = ? LIMIT 1");
+    $stmt->execute(array((int)$id));
+    return (bool)$stmt->fetchColumn();
+}
+
 function csrf_check() {
     $token = isset($_POST['csrf']) ? $_POST['csrf'] : '';
     if (empty($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {

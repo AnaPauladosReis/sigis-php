@@ -2,7 +2,7 @@
 require_once __DIR__ . '/includes/bootstrap.php';
 require_login();
 
-$sql = "SELECT pr.*, p.nome as projeto_nome, i.nome as item_nome
+$sql = "SELECT pr.*, p.nome as projeto_nome, i.nome as item_nome, i.unidade as item_unidade
         FROM producoes pr
         LEFT JOIN projetos p ON p.id = pr.projeto_id
         LEFT JOIN itens i ON i.id = pr.item_consumido_id
@@ -31,7 +31,7 @@ require __DIR__ . '/includes/layout_top.php';
           <tr>
             <td class="ps-3"><?php echo e(date('d/m/Y', strtotime($p['data_producao']))); ?></td>
             <td class="fw-medium text-dark"><?php echo e($p['projeto_nome'] ?: '—'); ?></td>
-            <td><?php echo e($p['item_nome']) . ' · ' . fmt_num_min($p['qtd_consumida']) . ' kg'; ?></td>
+            <td><?php echo e($p['item_nome']) . ' · ' . fmt_num_min($p['qtd_consumida']) . ' ' . e($p['item_unidade']); ?></td>
             <td><?php echo e($p['produto_gerado']); ?></td>
             <td><?php echo fmt_num($p['quantidade_gerada'], 0) . ' ' . e($p['unidade_gerada']); ?></td>
             <td class="pe-3 fw-semibold" style="color:#2E8B57"><?php echo fmt_num($p['residuo_kg'], 1); ?> kg</td>
@@ -72,14 +72,14 @@ require __DIR__ . '/includes/layout_top.php';
         <div class="row g-2 mb-3">
           <div class="col">
             <label class="form-label small fw-semibold">Material consumido (do estoque)</label>
-            <select name="item_consumido_id" class="form-select" required>
+            <select name="item_consumido_id" id="itemConsumidoSelect" class="form-select" required>
               <?php foreach ($itens as $it) { ?>
-                <option value="<?php echo $it['item_id']; ?>"><?php echo e($it['nome']); ?> — saldo: <?php echo fmt_num_min($it['saldo']); ?> <?php echo e($it['unidade']); ?></option>
+                <option value="<?php echo $it['item_id']; ?>" data-unidade="<?php echo e($it['unidade']); ?>"><?php echo e($it['nome']); ?> — saldo: <?php echo fmt_num_min($it['saldo']); ?> <?php echo e($it['unidade']); ?></option>
               <?php } ?>
             </select>
           </div>
           <div class="col">
-            <label class="form-label small fw-semibold">Qtd. consumida (kg)</label>
+            <label class="form-label small fw-semibold">Qtd. consumida (<span id="unidadeConsumidaLabel"><?php echo e($itens[0]['unidade'] ?? ''); ?></span>)</label>
             <input type="number" step="0.1" min="0" name="qtd_consumida" class="form-control" required>
           </div>
         </div>
@@ -109,4 +109,15 @@ require __DIR__ . '/includes/layout_top.php';
     </form>
   </div>
 </div>
+<script>
+  (function () {
+    var select = document.getElementById('itemConsumidoSelect');
+    var label = document.getElementById('unidadeConsumidaLabel');
+    if (!select || !label) { return; }
+    select.addEventListener('change', function () {
+      var opt = select.options[select.selectedIndex];
+      label.textContent = opt ? (opt.dataset.unidade || '') : '';
+    });
+  })();
+</script>
 <?php require __DIR__ . '/includes/layout_bottom.php'; ?>

@@ -16,22 +16,44 @@ $qtdGerada = (float)$_POST['quantidade_gerada'];
 $unidadeGerada = trim($_POST['unidade_gerada']);
 $residuo = ($_POST['residuo_kg'] !== '') ? (float)$_POST['residuo_kg'] : 0;
 
-$stmt = $pdo->prepare('SELECT saldo FROM estoque WHERE item_id = ?');
-$stmt->execute(array($itemId));
-$saldoAtual = (float)$stmt->fetchColumn();
-
-if ($qtdConsumida > $saldoAtual) {
-    flash_set('Saldo insuficiente em estoque para essa produção (disponível: ' . fmt_num_min($saldoAtual) . ' kg).', 'danger');
+if (!validar_data($data)) {
+    flash_set('Informe uma data válida (não futura).', 'danger');
+    redirect('producao.php');
+}
+if (!existe_id($pdo, 'itens', $itemId)) {
+    flash_set('Item consumido inválido.', 'danger');
+    redirect('producao.php');
+}
+if (!validar_numero_positivo($qtdConsumida)) {
+    flash_set('Informe uma quantidade consumida válida.', 'danger');
+    redirect('producao.php');
+}
+if (!validar_numero_positivo($qtdGerada)) {
+    flash_set('Informe uma quantidade gerada válida.', 'danger');
+    redirect('producao.php');
+}
+if ($projetoId !== null && !existe_id($pdo, 'projetos', $projetoId)) {
+    flash_set('Projeto inválido.', 'danger');
     redirect('producao.php');
 }
 
 $pdo->beginTransaction();
-$stmt = $pdo->prepare('INSERT INTO producoes (data_producao, projeto_id, item_consumido_id, qtd_consumida, produto_gerado, quantidade_gerada, unidade_gerada, residuo_kg, criado_por) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-$stmt->execute(array($data, $projetoId, $itemId, $qtdConsumida, $produto, $qtdGerada, $unidadeGerada, $residuo, $_SESSION['user_id']));
+try {
+    $stmt = $pdo->prepare('INSERT INTO producoes (data_producao, projeto_id, item_consumido_id, qtd_consumida, produto_gerado, quantidade_gerada, unidade_gerada, residuo_kg, criado_por) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    $stmt->execute(array($data, $projetoId, $itemId, $qtdConsumida, $produto, $qtdGerada, $unidadeGerada, $residuo, $_SESSION['user_id']));
+    $producaoId = (int)$pdo->lastInsertId();
 
-$stmt = $pdo->prepare('UPDATE estoque SET saldo = saldo - ? WHERE item_id = ?');
-$stmt->execute(array($qtdConsumida, $itemId));
-$pdo->commit();
+    estoque_movimentar($pdo, $itemId, -$qtdConsumida, 'producao_consumo', 'producao', $producaoId);
 
-flash_set('Produção registrada e estoque atualizado.');
+    $pdo->commit();
+    flash_set('Produção registrada e estoque atualizado.');
+} catch (RuntimeException $ex) {
+    $pdo->rollBack();
+    flash_set('Saldo insuficiente em estoque para essa produção.', 'danger');
+} catch (Exception $ex) {
+    $pdo->rollBack();
+    error_log($ex->getMessage());
+    flash_set('Não foi possível registrar a produção. Tente novamente.', 'danger');
+}
+
 redirect('producao.php');
