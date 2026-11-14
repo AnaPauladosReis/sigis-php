@@ -100,7 +100,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 **Aceite:** enviar `teste.php` com conteúdo de GIF grava `evidencia-…gif`; arquivo de 10 MB é recusado com mensagem amigável.
 
-### [ ] 1.3 Proteção CSRF em todos os formulários
+### [x] 1.3 Proteção CSRF em todos os formulários
 **Problema:** nenhum formulário de escrita tem token.
 **Passos:**
 - Em `includes/functions.php`: `csrf_token()`, `csrf_field()` (imprime `<input type="hidden" name="csrf">`) e `csrf_check()` (compara com `hash_equals`; se falhar, `http_response_code(400)` e encerra).
