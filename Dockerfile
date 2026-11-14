@@ -4,6 +4,7 @@ RUN docker-php-ext-install pdo pdo_mysql mysqli \
     && a2enmod rewrite
 
 COPY docker/apache-sigis.conf /etc/apache2/conf-enabled/apache-sigis.conf
+COPY docker/php-uploads.ini /usr/local/etc/php/conf.d/php-uploads.ini
 
 COPY . /var/www/html/
 
