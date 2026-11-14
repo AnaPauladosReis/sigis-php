@@ -35,7 +35,10 @@ Pré-requisitos: [Docker](https://docs.docker.com/get-docker/) e o plugin Docker
 
    Isso cria dois containers:
    - `app` — Apache + PHP 8.2 servindo a aplicação em `http://localhost:8080`
-   - `db` — MySQL 8.0, já inicializado com o schema em `database/schema.sql` (tabelas + dados de exemplo)
+   - `db` — MySQL 8.0, inicializado em ordem com `database/schema.sql` (tabelas) e
+     `database/import_instituicoes_nn_2026.sql` (as 37 instituições reais). Para
+     incluir também 4 instituições fictícias e algumas doações de exemplo (útil
+     para testar sem dados reais), defina `SEED_TESTE=1` no `.env` antes de subir.
 
 3. Acesse **http://localhost:8080** e faça login com o usuário de demonstração:
 
@@ -63,6 +66,7 @@ Pré-requisitos: [Docker](https://docs.docker.com/get-docker/) e o plugin Docker
 | `DB_USER` | Usuário do MySQL usado pela aplicação | `sigis` |
 | `DB_PASS` | Senha desse usuário | **obrigatória**, sem padrão |
 | `DB_ROOT_PASS` | Senha do usuário `root` do MySQL | **obrigatória**, sem padrão |
+| `SEED_TESTE` | `1` para incluir instituições/doações fictícias de teste | `0` |
 
 `DB_PASS` e `DB_ROOT_PASS` não têm mais valor padrão: sem um `.env` preenchido, `docker compose up` falha com uma mensagem pedindo para defini-las. Edite os valores de exemplo do `.env.example` antes de rodar.
 
@@ -74,11 +78,14 @@ Os uploads de evidências ficam persistidos em `./uploads`, montado como volume 
 
 Requisitos: PHP 8+ com extensão `pdo_mysql`, servidor Apache/Nginx e MySQL 8+.
 
-1. Crie o banco e importe o schema:
+1. Crie o banco, importe o schema e as instituições reais:
 
    ```bash
    mysql -u root -p < database/schema.sql
+   mysql -u root -p sigis < database/import_instituicoes_nn_2026.sql
    ```
+
+   Para incluir dados fictícios de teste, rode também `database/seed_dados_teste.sql`.
 
 2. Configure as credenciais em `config/db.php` (ou exporte as variáveis de ambiente `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`, que têm prioridade sobre os valores padrão do arquivo).
 

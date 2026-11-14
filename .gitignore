@@ -1,3 +1,5 @@
 .env
 docs/security-audit/
 config/db.local.php
+uploads/evidencias/*
+!uploads/evidencias/.gitkeep
