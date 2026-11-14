@@ -133,7 +133,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 **Passos:** antes do `fputcsv`, prefixar com `'` todo valor que comece com `=`, `+`, `-`, `@`, tab ou CR. Gravar o BOM UTF-8 no início para o Excel abrir acentos corretamente.
 **Aceite:** uma origem cadastrada como `=1+1` aparece literalmente no Excel.
 
-### [ ] 1.7 Docker: credenciais e porta do banco
+### [x] 1.7 Docker: credenciais e porta do banco
 **Passos:**
 - Remover `ports: "3306:3306"` do serviço `db` (o app acessa pela rede interna). Se precisar acessar de fora, criar `docker-compose.override.yml` só local.
 - Tirar os valores padrão de senha (`:-sigis`, `:-root`) e exigir `.env` (`${DB_PASS:?defina DB_PASS no .env}`).
