@@ -13,8 +13,37 @@ unset($g);
 
 require __DIR__ . '/includes/layout_top.php';
 ?>
-<div class="fw-bold mb-1" style="font-size:1.35rem">Grupos de Impacto &amp; Itens</div>
+<div class="d-flex justify-content-between align-items-start mb-1">
+  <div class="fw-bold" style="font-size:1.35rem">Grupos de Impacto &amp; Itens</div>
+  <button class="btn btn-sigis" data-bs-toggle="modal" data-bs-target="#modalGrupo">+ Novo Grupo</button>
+</div>
 <div class="text-muted mb-4">Categorização dos materiais e multiplicadores usados no cálculo de vidas impactadas</div>
+
+<div class="modal fade" id="modalGrupo" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content" method="post" action="grupos_salvar.php">
+      <?php csrf_field(); ?>
+      <div class="modal-header">
+        <h5 class="modal-title">Novo Grupo de Impacto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">Nome</label>
+          <input type="text" name="nome" class="form-control" placeholder="Ex: Calçados" required>
+        </div>
+        <div class="mb-1">
+          <label class="form-label small fw-semibold">Cor</label>
+          <input type="color" name="cor" class="form-control form-control-color" value="#2B5FAD">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sigis-outline" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-sigis">Salvar grupo</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <?php foreach ($grupos as $g) { ?>
   <div class="card mb-3">
@@ -22,9 +51,19 @@ require __DIR__ . '/includes/layout_top.php';
       <div class="d-flex align-items-center gap-2">
         <div style="width:8px;height:8px;border-radius:2px;background:<?php echo e($g['cor']); ?>"></div>
         <div class="fw-bold" style="font-size:.95rem"><?php echo e($g['nome']); ?></div>
+        <?php if (!$g['ativo']) { ?>
+          <span class="badge rounded-pill" style="background:#EEF0F3;color:#98A2B3;font-weight:700">Inativo</span>
+        <?php } ?>
         <div class="text-muted small">· <?php echo count($g['itens']); ?> <?php echo count($g['itens']) == 1 ? 'item cadastrado' : 'itens cadastrados'; ?></div>
       </div>
-      <a href="#" class="small fw-semibold text-decoration-none" style="color:var(--blue)" data-bs-toggle="modal" data-bs-target="#modalItem<?php echo $g['id']; ?>">+ Novo item</a>
+      <div class="d-flex align-items-center gap-3">
+        <?php if ($g['ativo']) { ?>
+          <a href="#" class="small fw-semibold text-decoration-none" style="color:var(--blue)" data-bs-toggle="modal" data-bs-target="#modalItem<?php echo $g['id']; ?>">+ Novo item</a>
+        <?php } ?>
+        <button type="button" class="btn btn-sm btn-icon-edit" title="Editar grupo" data-bs-toggle="modal" data-bs-target="#modalEditGrupo<?php echo $g['id']; ?>">
+          <i class="bi bi-pencil"></i>
+        </button>
+      </div>
     </div>
     <div class="table-responsive">
       <table class="table table-sigis table-itens mb-0">
@@ -101,6 +140,40 @@ require __DIR__ . '/includes/layout_top.php';
         <div class="modal-footer">
           <button type="button" class="btn btn-sigis-outline" data-bs-dismiss="modal">Cancelar</button>
           <button type="submit" class="btn btn-sigis">Salvar item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalEditGrupo<?php echo $g['id']; ?>" tabindex="-1">
+    <div class="modal-dialog">
+      <form class="modal-content" method="post" action="grupos_editar.php">
+        <?php csrf_field(); ?>
+        <input type="hidden" name="id" value="<?php echo $g['id']; ?>">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Grupo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Nome</label>
+            <input type="text" name="nome" class="form-control" value="<?php echo e($g['nome']); ?>" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Cor</label>
+            <input type="color" name="cor" class="form-control form-control-color" value="<?php echo e($g['cor']); ?>">
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="grupoAtivoCk<?php echo $g['id']; ?>" name="ativo" value="1" <?php echo $g['ativo'] ? 'checked' : ''; ?>>
+            <label class="form-check-label small" for="grupoAtivoCk<?php echo $g['id']; ?>">Grupo ativo</label>
+          </div>
+          <?php if (count(array_filter($g['itens'], function ($it) { return $it['ativo']; }))) { ?>
+            <div class="text-muted small mt-2">Para inativar, primeiro inative os itens ativos deste grupo.</div>
+          <?php } ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sigis-outline" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-sigis">Salvar alterações</button>
         </div>
       </form>
     </div>
