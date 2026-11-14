@@ -1,3 +1,10 @@
 .git
 .gitattributes
 README.md
+.env
+database/
+docs/
+tests/
+.github/
+*.md
+docker-compose*.yml
