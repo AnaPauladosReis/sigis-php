@@ -155,7 +155,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 ## Fase 2 — Regras de estoque e validações (P0)
 
-### [ ] 2.1 Função única para movimentar estoque
+### [x] 2.1 Função única para movimentar estoque
 **Problema:** a validação de saldo em `producao_salvar.php` e `doacoes.php` acontece **antes** do `beginTransaction()` e o `UPDATE estoque SET saldo = saldo - ?` não confere o saldo — dois usuários ao mesmo tempo podem deixar o estoque negativo (RN015). `entradas_salvar.php` e `producao_salvar.php` também não fazem `rollBack()` se algo falhar.
 **Passos:**
 - Criar `includes/estoque.php` (incluído pelo `bootstrap.php`) com `estoque_movimentar(PDO $pdo, int $itemId, float $delta, string $tipo, ?string $refTipo, ?int $refId): void`. Para saída: `UPDATE estoque SET saldo = saldo + ? WHERE item_id = ? AND saldo + ? >= 0` e lançar exceção se `rowCount() === 0`.
