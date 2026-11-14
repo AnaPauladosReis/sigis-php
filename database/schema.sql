@@ -43,7 +43,8 @@ CREATE TABLE login_tentativas (
 CREATE TABLE grupos_impacto (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
-  cor VARCHAR(7) NOT NULL DEFAULT '#2B5FAD'
+  cor VARCHAR(7) NOT NULL DEFAULT '#2B5FAD',
+  ativo TINYINT(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB;
 
 INSERT INTO grupos_impacto (id, nome, cor) VALUES
@@ -97,6 +98,7 @@ CREATE TABLE itens (
   unidade VARCHAR(20) NOT NULL,
   peso_unitario DECIMAL(10,3) NOT NULL DEFAULT 0,
   multiplicador DECIMAL(10,3) NOT NULL DEFAULT 0,
+  ativo TINYINT(1) NOT NULL DEFAULT 1,
   FOREIGN KEY (grupo_id) REFERENCES grupos_impacto(id),
   FOREIGN KEY (projeto_id) REFERENCES projetos(id)
 ) ENGINE=InnoDB;
@@ -205,7 +207,8 @@ CREATE TABLE instituicoes (
   bairro VARCHAR(100),
   responsavel VARCHAR(150),
   tipo VARCHAR(100),
-  acolhimento TINYINT(1) NOT NULL DEFAULT 0
+  acolhimento TINYINT(1) NOT NULL DEFAULT 0,
+  ativo TINYINT(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB;
 
 -- Instituicoes reais: importar de database/import_instituicoes_nn_2026.sql
@@ -230,16 +233,26 @@ SELECT id, 0, 0 FROM itens;
 -- ---------------------------------------------------------
 -- Entradas de materiais
 -- ---------------------------------------------------------
+-- Origens das entradas (de onde o material veio), com categoria fixa.
+CREATE TABLE origens (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(150) NOT NULL,
+  categoria VARCHAR(30) NOT NULL,
+  ativo TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB;
+
 CREATE TABLE entradas (
   id INT AUTO_INCREMENT PRIMARY KEY,
   data_entrada DATE NOT NULL,
   origem VARCHAR(150),
+  origem_id INT NULL,
   projeto_id INT,
   item_id INT NOT NULL,
   quantidade DECIMAL(12,3) NOT NULL,
   peso DECIMAL(12,3),
   criado_por INT NULL,
   criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (origem_id) REFERENCES origens(id),
   FOREIGN KEY (projeto_id) REFERENCES projetos(id),
   FOREIGN KEY (item_id) REFERENCES itens(id),
   FOREIGN KEY (criado_por) REFERENCES usuarios(id)

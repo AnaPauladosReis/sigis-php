@@ -2,15 +2,17 @@
 require_once __DIR__ . '/includes/bootstrap.php';
 require_login();
 
-$sql = "SELECT e.*, p.nome as projeto_nome, i.nome as item_nome, i.unidade
+$sql = "SELECT e.*, p.nome as projeto_nome, i.nome as item_nome, i.unidade, o.nome as origem_nome, o.categoria as origem_categoria
         FROM entradas e
         LEFT JOIN projetos p ON p.id = e.projeto_id
+        LEFT JOIN origens o ON o.id = e.origem_id
         JOIN itens i ON i.id = e.item_id
         ORDER BY e.data_entrada DESC, e.id DESC";
 $entradas = $pdo->query($sql)->fetchAll();
 
 $projetos = $pdo->query("SELECT * FROM projetos WHERE status = 'Ativo' ORDER BY nome")->fetchAll();
-$itens = $pdo->query('SELECT * FROM itens ORDER BY nome')->fetchAll();
+$itens = $pdo->query('SELECT * FROM itens WHERE ativo = 1 ORDER BY nome')->fetchAll();
+$origens = $pdo->query('SELECT * FROM origens WHERE ativo = 1 ORDER BY nome')->fetchAll();
 
 require __DIR__ . '/includes/layout_top.php';
 ?>
@@ -25,12 +27,13 @@ require __DIR__ . '/includes/layout_top.php';
 <div class="card">
   <div class="table-responsive">
     <table class="table table-sigis mb-0">
-      <thead><tr><th class="ps-3">Data</th><th>Origem</th><th>Projeto</th><th>Item</th><th>Quantidade</th><th class="pe-3">Peso</th></tr></thead>
+      <thead><tr><th class="ps-3">Data</th><th>Origem</th><th>Categoria</th><th>Projeto</th><th>Item</th><th>Quantidade</th><th class="pe-3">Peso</th></tr></thead>
       <tbody>
         <?php foreach ($entradas as $e) { ?>
           <tr>
             <td class="ps-3"><?php echo e(date('d/m/Y', strtotime($e['data_entrada']))); ?></td>
-            <td><?php echo e($e['origem']); ?></td>
+            <td><?php echo e($e['origem_nome'] ?: $e['origem']); ?></td>
+            <td class="text-muted"><?php echo e($e['origem_categoria'] ?: '—'); ?></td>
             <td class="fw-medium text-dark"><?php echo e($e['projeto_nome'] ?: '—'); ?></td>
             <td><?php echo e($e['item_nome']); ?></td>
             <td><?php echo fmt_num_min($e['quantidade']) . ' ' . e($e['unidade']); ?></td>
@@ -38,7 +41,7 @@ require __DIR__ . '/includes/layout_top.php';
           </tr>
         <?php } ?>
         <?php if (!count($entradas)) { ?>
-          <tr><td colspan="6" class="text-center text-muted py-4">Nenhuma entrada registrada ainda.</td></tr>
+          <tr><td colspan="7" class="text-center text-muted py-4">Nenhuma entrada registrada ainda.</td></tr>
         <?php } ?>
       </tbody>
     </table>
@@ -61,13 +64,18 @@ require __DIR__ . '/includes/layout_top.php';
           </div>
           <div class="col">
             <label class="form-label small fw-semibold">Origem</label>
-            <input type="text" name="origem" class="form-control" placeholder="Doação espontânea..." required>
+            <select name="origem_id" class="form-select" required>
+              <option value="">— Selecione —</option>
+              <?php foreach ($origens as $o) { ?>
+                <option value="<?php echo $o['id']; ?>"><?php echo e($o['nome']); ?> (<?php echo e($o['categoria']); ?>)</option>
+              <?php } ?>
+            </select>
           </div>
         </div>
         <div class="mb-3">
           <label class="form-label small fw-semibold">Projeto</label>
-          <select name="projeto_id" class="form-select">
-            <option value="">— Sem projeto —</option>
+          <select name="projeto_id" id="entradaProjetoSelect" class="form-select" required>
+            <option value="">— Selecione —</option>
             <?php foreach ($projetos as $p) { ?>
               <option value="<?php echo $p['id']; ?>"><?php echo e($p['nome']); ?></option>
             <?php } ?>
@@ -80,7 +88,7 @@ require __DIR__ . '/includes/layout_top.php';
               <?php foreach ($itens as $it) {
                   $stepItem = in_array($it['unidade'], array('un', 'par')) ? '1' : '0.1';
               ?>
-                <option value="<?php echo $it['id']; ?>" data-step="<?php echo $stepItem; ?>"><?php echo e($it['nome']); ?> (<?php echo e($it['unidade']); ?>)</option>
+                <option value="<?php echo $it['id']; ?>" data-step="<?php echo $stepItem; ?>" data-projeto="<?php echo $it['projeto_id'] ?: ''; ?>"><?php echo e($it['nome']); ?> (<?php echo e($it['unidade']); ?>)</option>
               <?php } ?>
             </select>
           </div>
@@ -105,9 +113,13 @@ require __DIR__ . '/includes/layout_top.php';
   (function () {
     var select = document.getElementById('entradaItemSelect');
     var quantidade = document.getElementById('entradaQuantidade');
+    var projeto = document.getElementById('entradaProjetoSelect');
     function atualizarStep() {
       var opt = select.options[select.selectedIndex];
       quantidade.step = (opt && opt.dataset.step) ? opt.dataset.step : '1';
+      if (opt && opt.dataset.projeto) {
+        projeto.value = opt.dataset.projeto;
+      }
     }
     select.addEventListener('change', atualizarStep);
     atualizarStep();

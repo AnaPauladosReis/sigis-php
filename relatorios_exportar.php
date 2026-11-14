@@ -14,8 +14,8 @@ $queries = array(
         'arquivo' => 'instituicoes_atendidas.csv',
     ),
     'entradas' => array(
-        'sql' => "SELECT e.data_entrada AS Data, e.origem AS Origem, p.nome AS Projeto, i.nome AS Item, e.quantidade AS Quantidade, i.unidade AS Unidade, e.peso AS Peso_kg
-                  FROM entradas e LEFT JOIN projetos p ON p.id = e.projeto_id JOIN itens i ON i.id = e.item_id ORDER BY e.data_entrada DESC",
+        'sql' => "SELECT e.data_entrada AS Data, COALESCE(o.nome, e.origem) AS Origem, o.categoria AS Categoria_Origem, p.nome AS Projeto, i.nome AS Item, e.quantidade AS Quantidade, i.unidade AS Unidade, e.peso AS Peso_kg
+                  FROM entradas e LEFT JOIN origens o ON o.id = e.origem_id LEFT JOIN projetos p ON p.id = e.projeto_id JOIN itens i ON i.id = e.item_id ORDER BY e.data_entrada DESC",
         'arquivo' => 'entradas_materiais.csv',
     ),
     'producao' => array(

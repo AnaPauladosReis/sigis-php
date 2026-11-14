@@ -91,6 +91,14 @@ ORDER BY ts DESC
 LIMIT 6";
 $atividades = $pdo->query($sqlAtiv)->fetchAll();
 
+// ---- Itens abaixo do estoque minimo ----
+$itensBaixos = $pdo->query(
+    "SELECT i.nome, i.unidade, es.saldo, es.minimo
+     FROM estoque es JOIN itens i ON i.id = es.item_id
+     WHERE i.ativo = 1 AND es.minimo > 0 AND es.saldo < es.minimo
+     ORDER BY i.nome"
+)->fetchAll();
+
 $pageTitle = 'Dashboard administrativo';
 require __DIR__ . '/includes/layout_top.php';
 ?>
@@ -143,6 +151,26 @@ require __DIR__ . '/includes/layout_top.php';
     </div>
   </div>
 </div>
+
+<?php if (count($itensBaixos)) { ?>
+  <div class="card mb-3">
+    <div class="p-3 pb-2 fw-semibold" style="font-size:.9rem">Itens abaixo do estoque mínimo</div>
+    <div class="table-responsive">
+      <table class="table table-sigis mb-0">
+        <thead><tr><th class="ps-3">Item</th><th>Saldo</th><th class="pe-3">Mínimo</th></tr></thead>
+        <tbody>
+          <?php foreach ($itensBaixos as $it) { ?>
+            <tr>
+              <td class="ps-3 fw-medium text-dark"><?php echo e($it['nome']); ?></td>
+              <td class="fw-semibold" style="color:#C1662F"><?php echo fmt_num_min($it['saldo']) . ' ' . e($it['unidade']); ?></td>
+              <td class="pe-3 text-muted"><?php echo fmt_num_min($it['minimo']) . ' ' . e($it['unidade']); ?></td>
+            </tr>
+          <?php } ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<?php } ?>
 
 <div class="card">
   <div class="p-3 pb-2 fw-semibold" style="font-size:.9rem">Atividade recente</div>

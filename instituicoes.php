@@ -24,17 +24,18 @@ require __DIR__ . '/includes/layout_top.php';
 <div class="card">
   <div class="table-responsive">
     <table class="table table-sigis mb-0">
-      <thead><tr><th class="ps-3">Instituição</th><th>Razão Social</th><th>CNPJ</th><th>Bairro</th><th>Responsável</th><th>Tipo</th><th>Acolhimento</th><th class="pe-3 text-end">Ações</th></tr></thead>
+      <thead><tr><th class="ps-3">Instituição</th><th>Razão Social</th><th>CNPJ</th><th>Bairro</th><th>Responsável</th><th>Tipo</th><th>Acolhimento</th><th>Status</th><th class="pe-3 text-end">Ações</th></tr></thead>
       <tbody>
         <?php foreach ($instituicoes as $i) { ?>
           <tr>
-            <td class="ps-3 fw-medium text-dark"><?php echo e($i['nome']); ?></td>
+            <td class="ps-3 fw-medium"><a href="instituicao.php?id=<?php echo $i['id']; ?>" class="text-dark text-decoration-none"><?php echo e($i['nome']); ?></a></td>
             <td><?php echo e($i['razao_social']); ?></td>
             <td><?php echo e($i['cnpj']); ?></td>
             <td><?php echo e($i['bairro']); ?></td>
             <td><?php echo e($i['responsavel']); ?></td>
             <td><?php echo e($i['tipo']); ?></td>
             <td class="fw-semibold" style="color:<?php echo $i['acolhimento'] ? '#2E8B57' : '#98A2B3'; ?>"><?php echo $i['acolhimento'] ? 'Sim' : 'Não'; ?></td>
+            <td class="fw-semibold" style="color:<?php echo $i['ativo'] ? '#2E8B57' : '#98A2B3'; ?>"><?php echo $i['ativo'] ? 'Ativa' : 'Inativa'; ?></td>
             <td class="pe-3 text-end">
               <div class="d-flex gap-1 justify-content-end flex-nowrap">
                 <button type="button" class="btn btn-sm btn-icon-edit" title="Editar instituição" data-bs-toggle="modal" data-bs-target="#modalEditInstituicao<?php echo $i['id']; ?>">
@@ -52,7 +53,7 @@ require __DIR__ . '/includes/layout_top.php';
           </tr>
         <?php } ?>
         <?php if (!count($instituicoes)) { ?>
-          <tr><td colspan="8" class="text-center text-muted py-4">Nenhuma instituição encontrada.</td></tr>
+          <tr><td colspan="9" class="text-center text-muted py-4">Nenhuma instituição encontrada.</td></tr>
         <?php } ?>
       </tbody>
     </table>
@@ -148,9 +149,13 @@ require __DIR__ . '/includes/layout_top.php';
               <input type="text" name="tipo" class="form-control" value="<?php echo e($i['tipo']); ?>" placeholder="Ex: Casa de acolhimento">
             </div>
           </div>
-          <div class="form-check">
+          <div class="form-check mb-2">
             <input type="checkbox" class="form-check-input" id="acolhimentoCkEdit<?php echo $i['id']; ?>" name="acolhimento" value="1" <?php echo $i['acolhimento'] ? 'checked' : ''; ?>>
             <label class="form-check-label small" for="acolhimentoCkEdit<?php echo $i['id']; ?>">Instituição de acolhimento</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="ativaCkEdit<?php echo $i['id']; ?>" name="ativo" value="1" <?php echo $i['ativo'] ? 'checked' : ''; ?>>
+            <label class="form-check-label small" for="ativaCkEdit<?php echo $i['id']; ?>">Instituição ativa</label>
           </div>
         </div>
         <div class="modal-footer">

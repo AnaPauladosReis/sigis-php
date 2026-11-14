@@ -14,6 +14,7 @@ $peso = (float)$_POST['peso_unitario'];
 $mult = (float)$_POST['multiplicador'];
 $grupoId = (int)$_POST['grupo_id'];
 $projetoId = !empty($_POST['projeto_id']) ? (int)$_POST['projeto_id'] : null;
+$ativo = !empty($_POST['ativo']) ? 1 : 0;
 
 if ($nome === '' || $unidade === '') {
     flash_set('Preencha nome e unidade do item.', 'danger');
@@ -32,8 +33,8 @@ if (!validar_numero_positivo($mult)) {
     redirect('grupos.php');
 }
 
-$stmt = $pdo->prepare('UPDATE itens SET nome = ?, unidade = ?, peso_unitario = ?, multiplicador = ?, grupo_id = ?, projeto_id = ? WHERE id = ?');
-$stmt->execute(array($nome, $unidade, $peso, $mult, $grupoId, $projetoId, $id));
+$stmt = $pdo->prepare('UPDATE itens SET nome = ?, unidade = ?, peso_unitario = ?, multiplicador = ?, grupo_id = ?, projeto_id = ?, ativo = ? WHERE id = ?');
+$stmt->execute(array($nome, $unidade, $peso, $mult, $grupoId, $projetoId, $ativo, $id));
 
 flash_set('Item "' . $nome . '" atualizado com sucesso.');
 redirect('grupos.php');

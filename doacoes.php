@@ -7,8 +7,8 @@ if (empty($_SESSION['wizard']) || !is_array($_SESSION['wizard'])) {
 }
 $wizard = &$_SESSION['wizard'];
 
-$instituicoes = $pdo->query('SELECT * FROM instituicoes ORDER BY nome')->fetchAll();
-$estoqueItens = $pdo->query('SELECT es.item_id, i.nome, i.unidade, i.multiplicador, i.projeto_id, es.saldo, g.id AS grupo_id, g.nome AS grupo_nome FROM estoque es JOIN itens i ON i.id = es.item_id JOIN grupos_impacto g ON g.id = i.grupo_id ORDER BY g.nome, i.nome')->fetchAll();
+$instituicoes = $pdo->query('SELECT * FROM instituicoes WHERE ativo = 1 ORDER BY nome')->fetchAll();
+$estoqueItens = $pdo->query('SELECT es.item_id, i.nome, i.unidade, i.multiplicador, i.projeto_id, es.saldo, g.id AS grupo_id, g.nome AS grupo_nome FROM estoque es JOIN itens i ON i.id = es.item_id JOIN grupos_impacto g ON g.id = i.grupo_id WHERE i.ativo = 1 ORDER BY g.nome, i.nome')->fetchAll();
 
 $gruposItens = array();
 foreach ($estoqueItens as $it) {

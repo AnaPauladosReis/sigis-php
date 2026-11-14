@@ -141,7 +141,7 @@ function validar_cnpj($cnpj) {
 
 /** Confere se existe um registro com esse id numa tabela da lista permitida (evita SQL injection no nome da tabela). */
 function existe_id(PDO $pdo, $tabela, $id) {
-    $tabelasPermitidas = array('itens', 'projetos', 'instituicoes', 'grupos_impacto');
+    $tabelasPermitidas = array('itens', 'projetos', 'instituicoes', 'grupos_impacto', 'origens');
     if (!in_array($tabela, $tabelasPermitidas, true)) {
         throw new InvalidArgumentException('Tabela não permitida em existe_id(): ' . $tabela);
     }

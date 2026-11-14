@@ -19,6 +19,7 @@ $screenTitles = array(
     'doacoes_historico' => 'Histórico de Doações',
     'termo' => 'Termo de Doação',
     'evidencias' => 'Evidências & Relatórios',
+    'origens' => 'Origens das Entradas',
     'usuarios' => 'Usuários',
     'perfil' => 'Meu Perfil',
 );
@@ -37,6 +38,7 @@ $navConfig = array(
     )),
     array('label' => 'Operações', 'items' => array(
         array('id' => 'entradas', 'label' => 'Entradas de Materiais'),
+        array('id' => 'origens', 'label' => 'Origens das Entradas'),
         array('id' => 'estoque', 'label' => 'Estoque'),
         array('id' => 'producao', 'label' => 'Produção Social'),
         array('id' => 'doacoes', 'label' => 'Direcionamento de Doações'),

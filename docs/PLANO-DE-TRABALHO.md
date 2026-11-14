@@ -222,30 +222,30 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 > Regra geral (RN037): **nada é apagado fisicamente**. Cadastros são **inativados**; registros inativos somem dos seletores de novas operações, mas continuam nas listagens (com filtro "mostrar inativos"), no histórico, nos termos e nos relatórios.
 
-### [ ] 4.1 Coluna de ativação nos cadastros
+### [x] 4.1 Coluna de ativação nos cadastros
 Migration: `ativo TINYINT(1) NOT NULL DEFAULT 1` em `grupos_impacto`, `itens`, `instituicoes`. Em `projetos`, padronizar `status` em `Ativo`/`Inativo`/`Encerrado`.
 **Aceite:** migration aplica num banco existente sem perder dados.
 
-### [ ] 4.2 Projetos sociais: editar e inativar (RF003)
+### [x] 4.2 Projetos sociais: editar e inativar (RF003)
 `projetos.php` ganha botão editar (modal igual ao de itens) e ativar/inativar; `projetos_salvar.php` passa a tratar `id` (update) além do insert.
 **Aceite:** projeto inativado não aparece em Entradas/Produção, mas continua nos relatórios.
 
-### [ ] 4.3 Grupos de impacto pela tela (RF004)
+### [x] 4.3 Grupos de impacto pela tela (RF004)
 Hoje grupos só são criados via SQL. Criar novo grupo (nome + cor), editar e inativar em `grupos.php` + `grupos_salvar.php`. Inativar grupo com itens ativos → pedir confirmação ou bloquear.
 **Aceite:** criar o grupo "Calçados", adicionar um item nele e usá-lo numa entrada.
 
-### [ ] 4.4 Itens: inativar (RF005)
+### [x] 4.4 Itens: inativar (RF005)
 Botão ativar/inativar no modal de edição. Itens inativos saem de Entradas, Produção e do passo 2 de Doações.
 **Aceite:** item inativo não aparece no wizard de doação; termos antigos com ele continuam abrindo.
 
-### [ ] 4.5 Instituições: editar, inativar e histórico (RF006, RF007)
+### [x] 4.5 Instituições: editar, inativar e histórico (RF006, RF007)
 - Botão editar no cadastro (mesmos campos do modal atual) e ativar/inativar.
 - Nova tela `instituicao.php?id=` com dados, lista de doações recebidas (data, termo, itens, vidas) e evidências.
 - Instituição inativa não aparece no passo 1 de Doações.
 
 **Aceite:** abrir uma instituição e ver todas as doações e o total de vidas impactadas.
 
-### [ ] 4.6 Origens das entradas como cadastro (RF008, RN011, RN012)
+### [x] 4.6 Origens das entradas como cadastro (RF008, RN011, RN012)
 **Problema:** `entradas.origem` é texto livre (`VARCHAR(150)`).
 **Passos:**
 - Tabela `origens (id, nome, categoria, ativo)` com categorias: Indústria, Multa social, Biblioteca, Campanha, Gincana, Troca solidária, Doação espontânea, Outra.
@@ -255,11 +255,11 @@ Botão ativar/inativar no modal de edição. Itens inativos saem de Entradas, Pr
 
 **Aceite:** não é possível registrar entrada sem origem cadastrada; o relatório de entradas mostra origem e categoria.
 
-### [ ] 4.7 Entrada sempre vinculada a projeto (RN013)
+### [x] 4.7 Entrada sempre vinculada a projeto (RN013)
 Hoje o projeto da entrada é opcional (`<select name="projeto_id">` sem `required`). Tornar obrigatório no formulário e no servidor; pré-selecionar o projeto padrão do item (`itens.projeto_id`).
 **Aceite:** POST sem `projeto_id` é recusado.
 
-### [ ] 4.8 Estoque mínimo editável (opcional — "controle de estoque mínimo" está nas propostas futuras do documento)
+### [x] 4.8 Estoque mínimo editável (opcional — "controle de estoque mínimo" está nas propostas futuras do documento)
 A coluna `estoque.minimo` existe e `estoque.php` já usa para "baixo", mas não há como editar. Adicionar edição do mínimo por item (Administrador) e destacar itens abaixo do mínimo no dashboard.
 **Aceite:** definir mínimo 10 num item com saldo 5 → aparece como baixo.
 
