@@ -79,7 +79,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 ## Fase 1 — Segurança e infraestrutura (P0)
 
-### [ ] 1.1 Impedir que arquivos internos sejam servidos pelo Apache
+### [x] 1.1 Impedir que arquivos internos sejam servidos pelo Apache
 **Problema:** o `Dockerfile` copia o repositório inteiro para `/var/www/html` e o `.dockerignore` só exclui `.git`, `.gitattributes` e `README.md`. Ficam acessíveis pelo navegador `database/*.sql` (inclusive o hash da senha do admin), `docs/` e, se existir no momento do build, o **`.env` com as senhas do banco**. Além disso, o `php:8.2-apache` usa `AllowOverride None`, então `config/.htaccess` e `uploads/.htaccess` **são ignorados**.
 **Arquivos:** `Dockerfile`, `.dockerignore`, novo `docker/apache-sigis.conf`.
 **Passos:**
