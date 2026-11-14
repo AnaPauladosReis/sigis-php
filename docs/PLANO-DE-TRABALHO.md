@@ -222,7 +222,7 @@ P0 = necessário para a banca final · P1 = muito recomendado · P2 = se houver 
 
 > Regra geral (RN037): **nada é apagado fisicamente**. Cadastros são **inativados**; registros inativos somem dos seletores de novas operações, mas continuam nas listagens (com filtro "mostrar inativos"), no histórico, nos termos e nos relatórios.
 
-### [ ] 4.1 Coluna de ativação nos cadastros
+### [x] 4.1 Coluna de ativação nos cadastros
 Migration: `ativo TINYINT(1) NOT NULL DEFAULT 1` em `grupos_impacto`, `itens`, `instituicoes`. Em `projetos`, padronizar `status` em `Ativo`/`Inativo`/`Encerrado`.
 **Aceite:** migration aplica num banco existente sem perder dados.
 
