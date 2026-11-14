@@ -19,9 +19,8 @@ try {
         throw new Exception('Doação não encontrada.');
     }
 
-    $stmtSaldo = $pdo->prepare('UPDATE estoque SET saldo = saldo + ? WHERE item_id = ?');
     foreach ($itens as $it) {
-        $stmtSaldo->execute(array($it['quantidade'], $it['item_id']));
+        estoque_movimentar($pdo, (int)$it['item_id'], (float)$it['quantidade'], 'ajuste', 'doacao_cancelada', $id);
     }
 
     $pdo->prepare('DELETE FROM doacao_itens WHERE doacao_id = ?')->execute(array($id));

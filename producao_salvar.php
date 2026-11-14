@@ -16,22 +16,23 @@ $qtdGerada = (float)$_POST['quantidade_gerada'];
 $unidadeGerada = trim($_POST['unidade_gerada']);
 $residuo = ($_POST['residuo_kg'] !== '') ? (float)$_POST['residuo_kg'] : 0;
 
-$stmt = $pdo->prepare('SELECT saldo FROM estoque WHERE item_id = ?');
-$stmt->execute(array($itemId));
-$saldoAtual = (float)$stmt->fetchColumn();
+$pdo->beginTransaction();
+try {
+    $stmt = $pdo->prepare('INSERT INTO producoes (data_producao, projeto_id, item_consumido_id, qtd_consumida, produto_gerado, quantidade_gerada, unidade_gerada, residuo_kg, criado_por) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    $stmt->execute(array($data, $projetoId, $itemId, $qtdConsumida, $produto, $qtdGerada, $unidadeGerada, $residuo, $_SESSION['user_id']));
+    $producaoId = (int)$pdo->lastInsertId();
 
-if ($qtdConsumida > $saldoAtual) {
-    flash_set('Saldo insuficiente em estoque para essa produção (disponível: ' . fmt_num_min($saldoAtual) . ' kg).', 'danger');
-    redirect('producao.php');
+    estoque_movimentar($pdo, $itemId, -$qtdConsumida, 'producao_consumo', 'producao', $producaoId);
+
+    $pdo->commit();
+    flash_set('Produção registrada e estoque atualizado.');
+} catch (RuntimeException $ex) {
+    $pdo->rollBack();
+    flash_set('Saldo insuficiente em estoque para essa produção.', 'danger');
+} catch (Exception $ex) {
+    $pdo->rollBack();
+    error_log($ex->getMessage());
+    flash_set('Não foi possível registrar a produção. Tente novamente.', 'danger');
 }
 
-$pdo->beginTransaction();
-$stmt = $pdo->prepare('INSERT INTO producoes (data_producao, projeto_id, item_consumido_id, qtd_consumida, produto_gerado, quantidade_gerada, unidade_gerada, residuo_kg, criado_por) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-$stmt->execute(array($data, $projetoId, $itemId, $qtdConsumida, $produto, $qtdGerada, $unidadeGerada, $residuo, $_SESSION['user_id']));
-
-$stmt = $pdo->prepare('UPDATE estoque SET saldo = saldo - ? WHERE item_id = ?');
-$stmt->execute(array($qtdConsumida, $itemId));
-$pdo->commit();
-
-flash_set('Produção registrada e estoque atualizado.');
 redirect('producao.php');

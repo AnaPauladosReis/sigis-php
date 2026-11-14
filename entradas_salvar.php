@@ -20,21 +20,19 @@ if ($quantidade <= 0) {
 }
 
 $pdo->beginTransaction();
-$stmt = $pdo->prepare('INSERT INTO entradas (data_entrada, origem, projeto_id, item_id, quantidade, peso, criado_por) VALUES (?, ?, ?, ?, ?, ?, ?)');
-$stmt->execute(array($data, $origem, $projetoId, $itemId, $quantidade, $peso, $_SESSION['user_id']));
+try {
+    $stmt = $pdo->prepare('INSERT INTO entradas (data_entrada, origem, projeto_id, item_id, quantidade, peso, criado_por) VALUES (?, ?, ?, ?, ?, ?, ?)');
+    $stmt->execute(array($data, $origem, $projetoId, $itemId, $quantidade, $peso, $_SESSION['user_id']));
 
-// atualiza (ou cria) o saldo em estoque
-$stmt = $pdo->prepare('SELECT id FROM estoque WHERE item_id = ?');
-$stmt->execute(array($itemId));
-$row = $stmt->fetch();
-if ($row) {
-    $stmt = $pdo->prepare('UPDATE estoque SET saldo = saldo + ? WHERE item_id = ?');
-    $stmt->execute(array($quantidade, $itemId));
-} else {
-    $stmt = $pdo->prepare('INSERT INTO estoque (item_id, saldo, minimo) VALUES (?, ?, 0)');
-    $stmt->execute(array($itemId, $quantidade));
+    $entradaId = (int)$pdo->lastInsertId();
+    estoque_movimentar($pdo, $itemId, $quantidade, 'entrada', 'entrada', $entradaId);
+
+    $pdo->commit();
+    flash_set('Entrada registrada e estoque atualizado.');
+} catch (Exception $ex) {
+    $pdo->rollBack();
+    error_log($ex->getMessage());
+    flash_set('Não foi possível registrar a entrada. Tente novamente.', 'danger');
 }
-$pdo->commit();
 
-flash_set('Entrada registrada e estoque atualizado.');
 redirect('entradas.php');
